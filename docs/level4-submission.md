@@ -19,10 +19,10 @@ The core innovation: **programmable financial privacy**. Not "encrypted database
 | Item | Link |
 |------|------|
 | Live demo | https://meridian-midnight.vercel.app |
-| GitHub repository | https://github.com/Anubhab-Rakshit/midnight-project |
+| GitHub repository | https://github.com/Anubhab-Rakshit/meridian |
 | Video demo | https://youtu.be/CFae-K52us0 |
-| CI/CD pipeline | https://github.com/Anubhab-Rakshit/midnight-project/actions |
-| Product proposal | https://github.com/Anubhab-Rakshit/midnight-project/blob/main/docs/level4-proposal.md |
+| CI/CD pipeline | https://github.com/Anubhab-Rakshit/meridian/actions |
+| Product proposal | https://github.com/Anubhab-Rakshit/meridian/blob/main/docs/level4-proposal.md |
 
 **Contract deployment note:** The splitpool contract has been compiled and its artifacts (prover/verifier keys, ZKIR, compiled bindings) are fully wired into the frontend. The contract was deployed to Preprod (address: `a9206339b84565fd515c0b2a49ae86783c7a7f278ed42414723b1053d489ecb8`) but the Preprod explorer has not indexed it. The frontend is fully wired to deploy, join, log expenses, and settle via the real Midnight SDK — no mocks.
 
@@ -214,9 +214,9 @@ Meridian is group expense splitting where the group is a private vault on Midnig
 **Links:**
 - Live demo: https://meridian-midnight.vercel.app
 - Video demo: https://youtu.be/CFae-K52us0
-- Repo: https://github.com/Anubhab-Rakshit/midnight-project
-- CI: https://github.com/Anubhab-Rakshit/midnight-project/actions
-- Proposal: https://github.com/Anubhab-Rakshit/midnight-project/blob/main/docs/level4-proposal.md
+- Repo: https://github.com/Anubhab-Rakshit/meridian
+- CI: https://github.com/Anubhab-Rakshit/meridian/actions
+- Proposal: https://github.com/Anubhab-Rakshit/meridian/blob/main/docs/level4-proposal.md
 
 Built on Midnight's programmable privacy infrastructure. The financial privacy that should have existed from the start.
 

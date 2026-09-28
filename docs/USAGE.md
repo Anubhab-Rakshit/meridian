@@ -4,7 +4,7 @@ A complete, step-by-step guide for using Meridian to split expenses privately wi
 
 > **Live app**: [meridian-midnight.vercel.app](https://meridian-midnight.vercel.app/)
 > **Feedback**: [Google Form](https://forms.gle/hCDimFx3mNSBUo1e7) · [Responses](https://docs.google.com/spreadsheets/d/1DOKjU134rzaJq5stoeGXu6EfACsXkBQ9n39viYquQ9c/edit?usp=sharing)
-> **Support**: [GitHub Issues](https://github.com/Anubhab-Rakshit/midnight-project/issues) · [@meridian_split](https://x.com/meridian_split)
+> **Support**: [GitHub Issues](https://github.com/Anubhab-Rakshit/meridian/issues) · [@meridian_split](https://x.com/meridian_split)
 
 ---
 
@@ -336,6 +336,6 @@ A: Currently, expenses cannot be edited or deleted after logging. This is a deli
 
 ## Support
 
-- **GitHub Issues**: [github.com/Anubhab-Rakshit/midnight-project/issues](https://github.com/Anubhab-Rakshit/midnight-project/issues)
+- **GitHub Issues**: [github.com/Anubhab-Rakshit/meridian/issues](https://github.com/Anubhab-Rakshit/meridian/issues)
 - **X / Twitter**: [@meridian_split](https://x.com/meridian_split)
 - **Developer**: [@anubhab_26](https://x.com/anubhab_26)

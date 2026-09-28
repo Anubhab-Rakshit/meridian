@@ -27,8 +27,8 @@ A zero-knowledge circuit proves the commitment without revealing the secret.
 |------|------|
 | Live demo | https://omen-midnight.vercel.app/ |
 | Demo video (1 min) | https://youtu.be/7kM8HDzJAeI |
-| GitHub repository | https://github.com/Anubhab-Rakshit/midnight-project |
-| GitHub Actions (CI) | https://github.com/Anubhab-Rakshit/midnight-project/actions |
+| GitHub repository | https://github.com/Anubhab-Rakshit/meridian |
+| GitHub Actions (CI) | https://github.com/Anubhab-Rakshit/meridian/actions |
 | Deployed Preprod contract | `5b7dcd349113b6dc0a11caa89b9245dc701d43e1cf114fc99bd10acf8e930f6c` |
 | Example on-chain premonition tx | https://explorer.preprod.midnight.network/transactions/e765f0402df04ac3e0330192e86fd7ca225c4f10165d57057e9c791eade7c510 |
 
@@ -66,7 +66,7 @@ which one, your identity, or any attribute.
 | Public GitHub repository with complete README | ✅ | [README](../README.md) |
 | Live demo link | ✅ | https://omen-midnight.vercel.app/ |
 | Screenshot: test output (3+ passing) | ✅ | [`test-results.md`](test-results.md) |
-| CI/CD badge or workflow with passing runs | ✅ | README badge + [CI run](https://github.com/Anubhab-Rakshit/midnight-project/actions) |
+| CI/CD badge or workflow with passing runs | ✅ | README badge + [CI run](https://github.com/Anubhab-Rakshit/meridian/actions) |
 | Demo video (1 minute) | ✅ | https://youtu.be/7kM8HDzJAeI |
 | README "privacy model" section | ✅ | README → `#privacy-model` |
 | Product proposal submitted for approval | ✅ (ready) | [`level3-proposal.md`](level3-proposal.md) |
@@ -112,7 +112,7 @@ cd frontend && npm test  # frontend
 5. **Build** — `vite build`
 6. *Optional:* Compact contract-compile job (`compile:premonition`)
 
-Result: **passing run** — https://github.com/Anubhab-Rakshit/midnight-project/actions
+Result: **passing run** — https://github.com/Anubhab-Rakshit/meridian/actions
 Badge in the README reflects this.
 
 ---
@@ -153,18 +153,18 @@ the commitment without revealing the secret.
 **Chosen idea (from the provided list): Private Allowlist Access**
 (Confidential Credentials) — prove membership without revealing identity. It
 directly extends Omen's already-working commitment primitive. Full proposal:
-https://github.com/Anubhab-Rakshit/midnight-project/blob/main/docs/level3-proposal.md
+https://github.com/Anubhab-Rakshit/meridian/blob/main/docs/level3-proposal.md
 
 **Submission details:**
 - Live demo: https://omen-midnight.vercel.app/
 - Demo video (1 min): https://youtu.be/7kM8HDzJAeI
-- Repository: https://github.com/Anubhab-Rakshit/midnight-project
+- Repository: https://github.com/Anubhab-Rakshit/meridian
 - Deployed Preprod contract: `5b7dcd349113b6dc0a11caa89b9245dc701d43e1cf114fc99bd10acf8e930f6c`
 - Example on-chain tx: https://explorer.preprod.midnight.network/transactions/e765f0402df04ac3e0330192e86fd7ca225c4f10165d57057e9c791eade7c510
 
 **Quality signals:**
-- **Tests:** 13 passing (Vitest) — https://github.com/Anubhab-Rakshit/midnight-project/blob/main/docs/test-results.md
-- **CI/CD:** GitHub Actions, passing on every push — https://github.com/Anubhab-Rakshit/midnight-project/actions/workflows/ci.yml
+- **Tests:** 13 passing (Vitest) — https://github.com/Anubhab-Rakshit/meridian/blob/main/docs/test-results.md
+- **CI/CD:** GitHub Actions, passing on every push — https://github.com/Anubhab-Rakshit/meridian/actions/workflows/ci.yml
 - **README** documents the full privacy model (what an observer can vs cannot learn).
 - 33 meaningful commits.
 

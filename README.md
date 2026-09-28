@@ -8,7 +8,7 @@
 
 <br/>
 
-[![CI](https://github.com/Anubhab-Rakshit/midnight-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Anubhab-Rakshit/midnight-project/actions/workflows/ci.yml) [![Tests](https://img.shields.io/badge/76-Tests%20Passing-10b981?style=flat&logo=vitest&logoColor=white)](#test-suite) [![Midnight](https://img.shields.io/badge/Built%20on-Midnight%20Network-0a0a0a?style=flat&logo=midnightnetwork&logoColor=white)](https://midnight.network) [![License](https://img.shields.io/badge/License-Apache_2.0-blue?style=flat)]()
+[![CI](https://github.com/Anubhab-Rakshit/meridian/actions/workflows/ci.yml/badge.svg)](https://github.com/Anubhab-Rakshit/meridian/actions/workflows/ci.yml) [![Tests](https://img.shields.io/badge/76-Tests%20Passing-10b981?style=flat&logo=vitest&logoColor=white)](#test-suite) [![Midnight](https://img.shields.io/badge/Built%20on-Midnight%20Network-0a0a0a?style=flat&logo=midnightnetwork&logoColor=white)](https://midnight.network) [![License](https://img.shields.io/badge/License-Apache_2.0-blue?style=flat)]()
 
 <br/>
 
@@ -341,8 +341,8 @@ For full Mermaid diagrams (sequence diagrams, state machines, component trees), 
 
 ```bash
 # Clone
-git clone https://github.com/Anubhab-Rakshit/midnight-project.git
-cd midnight-project
+git clone https://github.com/Anubhab-Rakshit/meridian.git
+cd meridian
 
 # Install Compact compiler
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/midnightntwrk/compact/releases/latest/download/compact-installer.sh | sh
@@ -397,7 +397,7 @@ See [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 ## Project Structure
 
 ```
-midnight-project/
+meridian/
 ├── contracts/
 │   ├── splitpool.compact              # ZK contract (join / logExpense / settle)
 │   └── managed/splitpool/             # Compiled artifacts

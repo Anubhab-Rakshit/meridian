@@ -152,5 +152,5 @@ Structured feedback from 70 Preprod users of Meridian, collected Sep 17-25, 2026
 
 1. **Google Form**: [Feedback Form](https://forms.gle/hCDimFx3mNSBUo1e7)
 2. **Google Sheet**: [All Responses](https://docs.google.com/spreadsheets/d/1DOKjU134rzaJq5stoeGXu6EfACsXkBQ9n39viYquQ9c/edit?usp=sharing)
-3. **GitHub Issues**: [github.com/Anubhab-Rakshit/midnight-project/issues](https://github.com/Anubhab-Rakshit/midnight-project/issues)
+3. **GitHub Issues**: [github.com/Anubhab-Rakshit/meridian/issues](https://github.com/Anubhab-Rakshit/meridian/issues)
 4. **X/Twitter**: Reply to [@anubhab_26](https://x.com/anubhab_26)
