@@ -16,29 +16,24 @@ import {
   AlertCircle, 
   ArrowRight, 
   Lock,
-  Download
+  Download,
+  ShieldCheck,
+  Star
 } from 'lucide-react';
 
 // ==========================================
-// Custom Luxury Bespoke SVG Icons & Vectors
+// Wallet brand icons — lucide-react, consistent with the app icon set
 // ==========================================
 const MidnightLogo = ({ size = 22, color = 'var(--accent-gold)' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M9 12l2 2 4-4" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
+  <ShieldCheck size={size} color={color} strokeWidth={1.5} />
 );
 
 const LaceLogo = ({ size = 20, color = '#a78bfa' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round"/>
-  </svg>
+  <Star size={size} color={color} strokeWidth={1.5} />
 );
 
 const WalletVector = ({ size = 20, color = '#fff' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M21 12V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V12ZM21 12H17C15.8954 12 15 11.1046 15 10C15 8.89543 15.8954 8 17 8H21V12Z" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
+  <Wallet size={size} color={color} strokeWidth={1.5} />
 );
 
 export const WalletConnect: React.FC = () => {

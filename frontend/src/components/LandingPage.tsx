@@ -97,7 +97,7 @@ export function LandingPage({ onLaunch }: LandingPageProps) {
               <span className="btn-text">Launch App</span>
               <div className="btn-glow-effect"></div>
             </button>
-            <a href="#" className="github-link">
+            <a href="https://github.com/Anubhab-Rakshit/meridian" target="_blank" rel="noopener noreferrer" className="github-link">
               <Code className="w-4 h-4" />
               <span>View on GitHub</span>
             </a>

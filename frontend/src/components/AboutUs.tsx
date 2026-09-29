@@ -1,132 +1,75 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import {
+  Fingerprint,
+  ShieldCheck,
+  Hash,
+  Share2,
+  BadgeCheck,
+  Radar,
+  Workflow,
+  LineChart,
+  RefreshCcw,
+  Award,
+  Layers,
+  Eye,
+  Cpu,
+} from 'lucide-react';
 
 // ==========================================
-// Custom Luxury Bespoke SVG Icons & Vectors
+// Feature icons — lucide-react, consistent with the app icon set
 // ==========================================
 
-const SvgZkSeal: React.FC<{ size?: number; className?: string }> = ({ size = 32 }) => (
-  <svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="24" r="22" stroke="var(--accent-gold)" strokeWidth="1" strokeDasharray="3 3" opacity="0.4" />
-    <circle cx="24" cy="24" r="17" stroke="var(--accent-gold)" strokeWidth="1.2" opacity="0.7" />
-    <circle cx="24" cy="24" r="10" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-    <path d="M24 8V14M24 34V40M8 24H14M34 24H40" stroke="var(--accent-gold)" strokeWidth="1.2" strokeLinecap="round" />
-    <polygon points="24,18 29,24 24,30 19,24" fill="var(--accent-gold)" fillOpacity="0.2" stroke="var(--accent-gold)" strokeWidth="1" />
-  </svg>
+const IconZkSeal: React.FC<{ size?: number }> = ({ size = 32 }) => (
+  <Fingerprint size={size} strokeWidth={1.5} />
 );
 
-const SvgShieldedVault: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 3L6 8V17C6 24.5 11.2 31.4 18 33C24.8 31.4 30 24.5 30 17V8L18 3Z" stroke="var(--accent-gold)" strokeWidth="1.5" fill="rgba(212,175,55,0.06)" />
-    <circle cx="18" cy="17" r="4.5" stroke="var(--accent-gold)" strokeWidth="1.2" />
-    <path d="M18 21.5V25" stroke="var(--accent-gold)" strokeWidth="1.5" strokeLinecap="round" />
-    <circle cx="18" cy="17" r="1.5" fill="var(--accent-gold)" />
-  </svg>
+const IconShieldedVault: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <ShieldCheck size={size} strokeWidth={1.5} />
 );
 
-const SvgCommitmentPrism: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="18,4 32,29 4,29" stroke="var(--accent-gold)" strokeWidth="1.2" fill="rgba(212,175,55,0.04)" />
-    <line x1="4" y1="18" x2="18" y2="18" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeDasharray="2 2" />
-    <line x1="18" y1="18" x2="30" y2="13" stroke="var(--accent-gold)" strokeWidth="1.2" />
-    <line x1="18" y1="18" x2="32" y2="21" stroke="#34d399" strokeWidth="1.2" />
-    <circle cx="18" cy="18" r="2.5" fill="var(--accent-gold)" />
-  </svg>
+const IconCommitmentPrism: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <Hash size={size} strokeWidth={1.5} />
 );
 
-const SvgNettingMatrix: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="9" cy="10" r="3.5" stroke="rgba(255,255,255,0.5)" strokeWidth="1" fill="rgba(255,255,255,0.05)" />
-    <circle cx="27" cy="10" r="3.5" stroke="rgba(255,255,255,0.5)" strokeWidth="1" fill="rgba(255,255,255,0.05)" />
-    <circle cx="18" cy="27" r="4" stroke="var(--accent-gold)" strokeWidth="1.5" fill="rgba(212,175,55,0.15)" />
-    <path d="M11 12L16 24M25 12L20 24" stroke="var(--accent-gold)" strokeWidth="1.2" strokeLinecap="round" />
-    <path d="M12.5 10H23.5" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="2 2" />
-  </svg>
+const IconNettingMatrix: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <Share2 size={size} strokeWidth={1.5} />
 );
 
-const SvgSettlementSeal: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="5" y="5" width="26" height="26" rx="6" stroke="var(--accent-gold)" strokeWidth="1.2" fill="rgba(212,175,55,0.05)" />
-    <path d="M11 18L16 23L25 13" stroke="var(--accent-gold)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="26" cy="10" r="2" fill="#34d399" />
-  </svg>
+const IconSettlementSeal: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <BadgeCheck size={size} strokeWidth={1.5} />
 );
 
-const SvgSurveillanceNode: React.FC<{ size?: number }> = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="14" cy="14" r="11" stroke="#f87171" strokeWidth="1" opacity="0.4" strokeDasharray="2 2" />
-    <circle cx="14" cy="14" r="6" stroke="#f87171" strokeWidth="1.2" opacity="0.8" />
-    <circle cx="14" cy="14" r="2" fill="#f87171" />
-    <line x1="14" y1="2" x2="14" y2="7" stroke="#f87171" strokeWidth="1" />
-    <line x1="14" y1="21" x2="14" y2="26" stroke="#f87171" strokeWidth="1" />
-    <line x1="2" y1="14" x2="7" y2="14" stroke="#f87171" strokeWidth="1" />
-    <line x1="21" y1="14" x2="26" y2="14" stroke="#f87171" strokeWidth="1" />
-  </svg>
+const IconSurveillanceNode: React.FC<{ size?: number }> = ({ size = 24 }) => (
+  <Radar size={size} strokeWidth={1.5} />
 );
 
-const SvgGraphOptimization: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="8" cy="8" r="3" stroke="var(--accent-gold)" strokeWidth="1" />
-    <circle cx="28" cy="8" r="3" stroke="var(--accent-gold)" strokeWidth="1" />
-    <circle cx="8" cy="28" r="3" stroke="var(--accent-gold)" strokeWidth="1" />
-    <circle cx="28" cy="28" r="3" stroke="var(--accent-gold)" strokeWidth="1" />
-    <path d="M11 8H25M8 11V25M28 11V25" stroke="var(--accent-gold)" strokeWidth="1.2" strokeLinecap="round" />
-    <path d="M10.5 10.5L25.5 25.5" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="2 2" />
-    <circle cx="18" cy="18" r="2" fill="var(--accent-gold)" />
-  </svg>
+const IconGraphOptimization: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <Workflow size={size} strokeWidth={1.5} />
 );
 
-const SvgAnalyticsCurve: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 28H32" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-    <path d="M6 26C12 26 14 10 18 10C22 10 24 26 30 26" stroke="var(--accent-gold)" strokeWidth="1.5" strokeLinecap="round" fill="rgba(212,175,55,0.08)" />
-    <circle cx="18" cy="10" r="2" fill="var(--accent-gold)" />
-    <line x1="18" y1="12" x2="18" y2="28" stroke="var(--accent-gold)" strokeWidth="1" strokeDasharray="1 2" />
-  </svg>
+const IconAnalyticsCurve: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <LineChart size={size} strokeWidth={1.5} />
 );
 
-const SvgRecurringCycle: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="18" cy="18" r="13" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="3 3" />
-    <path d="M18 5C25.1797 5 31 10.8203 31 18C31 21.6 29.5 24.8 27.1 27.1" stroke="var(--accent-gold)" strokeWidth="1.5" strokeLinecap="round" />
-    <polygon points="27,22 27,28 21,28" fill="var(--accent-gold)" />
-    <circle cx="18" cy="18" r="4" stroke="var(--accent-gold)" strokeWidth="1" />
-  </svg>
+const IconRecurringCycle: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <RefreshCcw size={size} strokeWidth={1.5} />
 );
 
-const SvgBadgeStar: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="18,3 22.5,13.5 34,14 25,21.5 28,33 18,26.5 8,33 11,21.5 2,14 13.5,13.5" stroke="var(--accent-gold)" strokeWidth="1.2" fill="rgba(212,175,55,0.1)" />
-    <circle cx="18" cy="18" r="3" fill="var(--accent-gold)" />
-  </svg>
+const IconBadgeStar: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <Award size={size} strokeWidth={1.5} />
 );
 
-const SvgCrossCircleVenn: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="13" cy="18" r="9" stroke="var(--accent-gold)" strokeWidth="1.2" fill="rgba(212,175,55,0.05)" />
-    <circle cx="23" cy="18" r="9" stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" fill="rgba(255,255,255,0.03)" />
-    <path d="M18 11.5C19.8 13.2 20.8 15.5 20.8 18C20.8 20.5 19.8 22.8 18 24.5C16.2 22.8 15.2 20.5 15.2 18C15.2 15.5 16.2 13.2 18 11.5Z" fill="var(--accent-gold)" fillOpacity="0.25" stroke="var(--accent-gold)" strokeWidth="1" />
-  </svg>
+const IconCrossCircleVenn: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <Layers size={size} strokeWidth={1.5} />
 );
 
-const SvgSelectiveIris: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 18C3 18 8 7 18 7C28 7 33 18 33 18C33 18 28 29 18 29C8 29 3 18 3 18Z" stroke="var(--accent-gold)" strokeWidth="1.2" fill="rgba(212,175,55,0.03)" />
-    <circle cx="18" cy="18" r="6" stroke="var(--accent-gold)" strokeWidth="1.2" />
-    <circle cx="18" cy="18" r="2.5" fill="#34d399" />
-    <line x1="18" y1="12" x2="18" y2="7" stroke="var(--accent-gold)" strokeWidth="1" strokeDasharray="1 1" />
-  </svg>
+const IconSelectiveIris: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <Eye size={size} strokeWidth={1.5} />
 );
 
-const SvgCompactCircuit: React.FC<{ size?: number }> = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="8" y="8" width="20" height="20" rx="4" stroke="var(--accent-gold)" strokeWidth="1.2" fill="rgba(212,175,55,0.06)" />
-    <line x1="3" y1="14" x2="8" y2="14" stroke="var(--accent-gold)" strokeWidth="1.2" />
-    <line x1="3" y1="22" x2="8" y2="22" stroke="var(--accent-gold)" strokeWidth="1.2" />
-    <line x1="28" y1="18" x2="33" y2="18" stroke="#34d399" strokeWidth="1.2" />
-    <path d="M13 14H18V18H23" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeLinecap="round" />
-    <circle cx="18" cy="18" r="1.5" fill="var(--accent-gold)" />
-  </svg>
+const IconCompactCircuit: React.FC<{ size?: number }> = ({ size = 28 }) => (
+  <Cpu size={size} strokeWidth={1.5} />
 );
 
 interface AboutUsProps {
@@ -209,8 +152,8 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="feature-icon-wrapper" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
-              <SvgSurveillanceNode size={26} />
+            <div className="feature-icon-wrapper" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
+              <IconSurveillanceNode size={26} />
               <div className="icon-glow" style={{ boxShadow: '0 0 20px rgba(239, 68, 68, 0.4)' }}></div>
             </div>
             <h3 className="feature-title">Surveillance Apps</h3>
@@ -228,7 +171,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           >
             <div className="feature-icon-wrapper">
-              <SvgZkSeal size={26} />
+              <IconZkSeal size={26} />
               <div className="icon-glow"></div>
             </div>
             <h3 className="feature-title">Public Blockchains</h3>
@@ -266,25 +209,25 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
             {
               step: '01',
               title: 'Create a Circle',
-              icon: <SvgShieldedVault size={28} />,
+              icon: <IconShieldedVault size={28} />,
               desc: 'Deploy a privacy vault on Midnight — each circle gets its own contract address and invite secret. Members join by proving knowledge of the secret.',
             },
             {
               step: '02',
               title: 'Log Expenses',
-              icon: <SvgCommitmentPrism size={28} />,
+              icon: <IconCommitmentPrism size={28} />,
               desc: 'Each payment is logged as a commitment hash: proof the expense exists without revealing the amount, label, or who paid. The hash goes on-chain; the details stay local.',
             },
             {
               step: '03',
               title: 'Compute Balances',
-              icon: <SvgNettingMatrix size={28} />,
+              icon: <IconNettingMatrix size={28} />,
               desc: 'The netting engine computes who owes whom from local data only — no balances are ever published to the blockchain.',
             },
             {
               step: '04',
               title: 'Settle on-chain',
-              icon: <SvgSettlementSeal size={28} />,
+              icon: <IconSettlementSeal size={28} />,
               desc: 'The settlement circuit proves balances are correct, the plan is optimal, and every member nets to zero — the verified hash is recorded on-chain.',
             },
           ].map((item, idx) => (
@@ -331,32 +274,32 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
           {[
             {
               title: 'Confidential Expense Tracking',
-              icon: <SvgShieldedVault size={26} />,
+              icon: <IconShieldedVault size={26} />,
               desc: 'Every expense is stored as a cryptographic commitment. The blockchain sees a hash; you see the full details. No one else learns the amounts.',
             },
             {
               title: 'Optimal Settlement Graph',
-              icon: <SvgGraphOptimization size={26} />,
+              icon: <IconGraphOptimization size={26} />,
               desc: 'The netting engine computes the minimum number of transfers needed to settle all debts. This isn’t an approximation; it’s proven.',
             },
             {
               title: 'Privacy-Preserving Analytics',
-              icon: <SvgAnalyticsCurve size={26} />,
+              icon: <IconAnalyticsCurve size={26} />,
               desc: 'See your circle’s spending patterns — total volume, per-member contributions — all computed locally. The analytics engine produces aggregate statistics safely.',
             },
             {
               title: 'Recurring Pacts',
-              icon: <SvgRecurringCycle size={26} />,
+              icon: <IconRecurringCycle size={26} />,
               desc: 'Automate shared subscriptions. Create recurring pacts for Netflix or rent. Each pact is a commitment to a fixed amount on a fixed schedule.',
             },
             {
               title: 'Badge System',
-              icon: <SvgBadgeStar size={26} />,
+              icon: <IconBadgeStar size={26} />,
               desc: 'Earn privacy-preserving badges based on your spending behavior. Badges are computed locally and never published on-chain.',
             },
             {
               title: 'Cross-Circle Portability',
-              icon: <SvgCrossCircleVenn size={26} />,
+              icon: <IconCrossCircleVenn size={26} />,
               desc: 'Your membership proof works across circles. Join multiple groups with the same wallet, and your identity is consistent but isolated.',
             },
           ].map((item, idx) => (
@@ -400,22 +343,22 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
           {[
             {
               title: 'Selective Disclosure',
-              icon: <SvgSelectiveIris size={26} />,
+              icon: <IconSelectiveIris size={26} />,
               desc: 'Midnight lets you prove facts about your data (e.g., "I have a positive balance in this circle") without revealing the data itself (the actual balance).',
             },
             {
               title: 'Compact Circuits',
-              icon: <SvgCompactCircuit size={26} />,
+              icon: <IconCompactCircuit size={26} />,
               desc: 'Meridian’s ZK circuits are compiled from Compact, Midnight’s native circuit language. Each circuit is a small, auditable program.',
             },
             {
               title: 'Wallet Integration',
-              icon: <SvgShieldedVault size={26} />,
+              icon: <IconShieldedVault size={26} />,
               desc: 'Midnight wallets (1 AM, Lace) handle proving, balancing, and submission. The dApp never touches private keys. The wallet proves statements on your behalf.',
             },
             {
               title: 'Preprod Network',
-              icon: <SvgZkSeal size={26} />,
+              icon: <IconZkSeal size={26} />,
               desc: 'Meridian runs on Midnight’s Preprod testnet. All contracts, transactions, and settlements are real on-chain operations — not simulations.',
             },
           ].map((item, idx) => (
@@ -519,7 +462,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
                 transition={{ duration: 0.25 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><SvgCompactCircuit size={20} /></div>
+                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><IconCompactCircuit size={20} /></div>
                   <h3 className="feature-title" style={{ fontSize: '2rem' }}>Compact Smart Contract: splitpool</h3>
                 </div>
                 <p className="feature-desc" style={{ marginBottom: '2rem' }}>
@@ -551,7 +494,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
                 transition={{ duration: 0.25 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><SvgZkSeal size={20} /></div>
+                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><IconZkSeal size={20} /></div>
                   <h3 className="feature-title" style={{ fontSize: '2rem' }}>Auditable ZK Circuits</h3>
                 </div>
                 <div className="features-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
@@ -582,7 +525,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
                 transition={{ duration: 0.25 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><SvgNettingMatrix size={20} /></div>
+                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><IconNettingMatrix size={20} /></div>
                   <h3 className="feature-title" style={{ fontSize: '2rem' }}>Minimum-Transfer Netting Engine</h3>
                 </div>
                 <p className="feature-desc" style={{ maxWidth: '800px' }}>
@@ -600,7 +543,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
                 transition={{ duration: 0.25 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><SvgAnalyticsCurve size={20} /></div>
+                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><IconAnalyticsCurve size={20} /></div>
                   <h3 className="feature-title" style={{ fontSize: '2rem' }}>Client-Side Analytics Engine</h3>
                 </div>
                 <p className="feature-desc" style={{ maxWidth: '800px' }}>
@@ -618,7 +561,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
                 transition={{ duration: 0.25 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><SvgBadgeStar size={20} /></div>
+                  <div className="feature-icon-wrapper" style={{ width: '40px', height: '40px' }}><IconBadgeStar size={20} /></div>
                   <h3 className="feature-title" style={{ fontSize: '2rem' }}>Statistical Badge System</h3>
                 </div>
                 <p className="feature-desc" style={{ maxWidth: '800px' }}>
@@ -643,7 +586,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
         >
           <div className="cta-background-glow"></div>
           <div className="feature-icon-wrapper" style={{ margin: '0 auto 1.5rem auto' }}>
-            <SvgShieldedVault size={26} />
+            <IconShieldedVault size={26} />
             <div className="icon-glow"></div>
           </div>
           <h2 className="cta-title">Start Your First Circle</h2>

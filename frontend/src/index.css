@@ -844,6 +844,7 @@ body {
   height: 48px;
   border-radius: 50%;
   background: rgba(194, 168, 120, 0.1);
+  color: var(--accent-gold);
   display: flex;
   align-items: center;
   justify-content: center;
