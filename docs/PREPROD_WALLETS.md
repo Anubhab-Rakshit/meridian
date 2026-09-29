@@ -41,74 +41,74 @@ curl -s -X POST https://indexer.preprod.midnight.network/api/v4/graphql \
 | # | Name | Wallet Address | Rating | Date |
 |---|------|---------------|--------|------|
 | 1 | Rupam Ghosh | `mn_addr_preprod140wauv4fws3xr46qxgssacdhjkfrxuvjv95kmcv08fpf67ft7zes7r6x57` | 9 | Sep 17 |
-| 2 | Bodhisatwa Dutta | `mn_addr_preprod16qtu7l4lgx8hcw5em5tjq75yq59dyra3cd8memr7cfgv7lz7506q52f4jd` | 10 | Sep 17 |
-| 3 | Snigdhanil Basu | `mn_addr_preprod1a4n6rqulslhf59j24salg9dejqtfg8xymcg9xssjv59r8zr94x2spt3pug` | 8 | Sep 17 |
-| 4 | Kausheya Roy | `mn_addr_preprod1fnwnmmgsdk6zg782fhdqj8wn0ndluaqcxad2tuweectecz0uaf8sg0lq0n` | 10 | Sep 17 |
+| 2 | Bodhisatwa Dutta | `mn_addr_preprod16qtu7l4lgx8hcw5em5tjq75yq59dyra3cd8memr7cfgv7lz7506q52f4jd` | 9 | Sep 17 |
+| 3 | Snigdhanil Basu | `mn_addr_preprod1a4n6rqulslhf59j24salg9dejqtfg8xymcg9xssjv59r8zr94x2spt3pug` | 10 | Sep 17 |
+| 4 | Kausheya Roy | `mn_addr_preprod1fnwnmmgsdk6zg782fhdqj8wn0ndluaqcxad2tuweectecz0uaf8sg0lq0n` | 8 | Sep 17 |
 | 5 | Vibhan Dutta | `mn_addr_preprod15kx769kwfaw7yarf24s5l6kjlzpn7ylcvta54dmwmwphwrtdkurq97cgr4` | 9 | Sep 17 |
-| 6 | Sampad De | `mn_addr_preprod1c4dle6ystrg2fzqllrznsd2axxs8wzatskra99nfdjj7056snkps5j99rk` | 7 | Sep 17 |
-| 7 | Amit Rakshit | `mn_addr_preprod1334m6h9j54rq8l4xpumnl52349r7s93p4w2juac2erf4h55cqnyqpxspy4` | 10 | Sep 17 |
-| 8 | Prajit Bakshi | `mn_addr_preprod1p874ecyu2ygkq6pmk8j9ug0gx256kt3kgug6chcmkn0s4kpxnt0qjh8awj` | 7 | Sep 17 |
-| 9 | Subham Bhat | `mn_addr_preprod15ggp8x65pvkx8z3ek2xd26ryqtulsk3mc4zt3cank3svzyf2z3es6jru3d` | 9 | Sep 17 |
-| 10 | Saketh Ram | `mn_addr_preprod1ss0hew4qhwaksjmagm74q8ts9daqdj4enkckwgrlrc683cl0psts3mhm3t` | 8 | Sep 17 |
+| 6 | Sampad De | `mn_addr_preprod1c4dle6ystrg2fzqllrznsd2axxs8wzatskra99nfdjj7056snkps5j99rk` | 8 | Sep 17 |
+| 7 | Amit Rakshit | `mn_addr_preprod1334m6h9j54rq8l4xpumnl52349r7s93p4w2juac2erf4h55cqnyqpxspy4` | 9 | Sep 17 |
+| 8 | Prajit Bakshi | `mn_addr_preprod1p874ecyu2ygkq6pmk8j9ug0gx256kt3kgug6chcmkn0s4kpxnt0qjh8awj` | 10 | Sep 17 |
+| 9 | Subham Bhat | `mn_addr_preprod15ggp8x65pvkx8z3ek2xd26ryqtulsk3mc4zt3cank3svzyf2z3es6jru3d` | 8 | Sep 17 |
+| 10 | Saketh Ram | `mn_addr_preprod1ss0hew4qhwaksjmagm74q8ts9daqdj4enkckwgrlrc683cl0psts3mhm3t` | 10 | Sep 17 |
 | 11 | Tathagata Ghosh | `mn_addr_preprod1k9x28wd2nt5ptz08xvw46ugwnau2crp8mz8rwv6shggdp4e44cfsucdnu8` | 10 | Sep 17 |
-| 12 | Raja | `mn_addr_preprod1c0sez6fqfv2g7km4gw6hva9xtkqyxnurnc5enxn7avcrcvmldafquth68e` | 8 | Sep 17 |
-| 13 | Sankhanil Chanda | `mn_addr_preprod1523chzum0jyelcv8f35yp2ua74gje87yztxdruq4cyuvltp7fwls3ex8vj` | 10 | Sep 17 |
+| 12 | Raja | `mn_addr_preprod1c0sez6fqfv2g7km4gw6hva9xtkqyxnurnc5enxn7avcrcvmldafquth68e` | 7 | Sep 17 |
+| 13 | Sankhanil Chanda | `mn_addr_preprod1523chzum0jyelcv8f35yp2ua74gje87yztxdruq4cyuvltp7fwls3ex8vj` | 9 | Sep 17 |
 | 14 | Rooplekha Banik | `mn_addr_preprod1kvq2egk76h9v2pc8upyh5dpklt30my7guyks0h3qajul6hzk47csq2gc9r` | 9 | Sep 17 |
 | 15 | Sreejita Basu | `mn_addr_preprod164fh96sxtwla2jncujgu3avrsgw5zg72q6m6v23uqk3s00fynxzsrc20y6` | 8 | Sep 17 |
-| 16 | Aritra Sarkar | `mn_addr_preprod1wg8gaqrqn8yn958lpsarh6meslfepr86cd5em6k6y7rqrvpa9eeqcvr379` | 4 | Sep 17 |
-| 17 | Shreya Dey Sarkar | `mn_addr_preprod1ak6pgcd7rt3ndutvj4njg6jjlhlt4v747sqkrtjdkzgm24y7cxlsn7sdkz` | 9 | Sep 18 |
-| 18 | Suniska Dey | `mn_addr_preprod1nus525thcpwhcmyss8mmeaqhc440ua2c9jkmdvsyrdjg9d62hu7qs9xasg` | 9 | Sep 18 |
-| 19 | Ruparna | `mn_addr_preprod14erua8cg5zrjdg5g2lwasau9er87hrra95884xgypy5s0ldsrdsq7uvdnr` | 9 | Sep 18 |
-| 20 | Ananya Basu | `mn_addr_preprod1nh9wy5d8224s9gymfrukwc887txdg78z5jyvawr45qqmwfj699ls42qp2q` | 10 | Sep 18 |
-| 21 | Soumyajit Mazumdar | `mn_addr_preprod122w38gq0wfzvnrd757zej6vy5nryjr54ku3yfk2skl6q492n7frq06u9sf` | 7 | Sep 18 |
+| 16 | Aritra Sarkar | `mn_addr_preprod1wg8gaqrqn8yn958lpsarh6meslfepr86cd5em6k6y7rqrvpa9eeqcvr379` | 6 | Sep 17 |
+| 17 | Shreya Dey Sarkar | `mn_addr_preprod1ak6pgcd7rt3ndutvj4njg6jjlhlt4v747sqkrtjdkzgm24y7cxlsn7sdkz` | 8 | Sep 18 |
+| 18 | Suniska Dey | `mn_addr_preprod1nus525thcpwhcmyss8mmeaqhc440ua2c9jkmdvsyrdjg9d62hu7qs9xasg` | 10 | Sep 18 |
+| 19 | Ruparna Biswas | `mn_addr_preprod14erua8cg5zrjdg5g2lwasau9er87hrra95884xgypy5s0ldsrdsq7uvdnr` | 9 | Sep 18 |
+| 20 | Ananya Basu | `mn_addr_preprod1nh9wy5d8224s9gymfrukwc887txdg78z5jyvawr45qqmwfj699ls42qp2q` | 9 | Sep 18 |
+| 21 | Soumyajit Mazumdar | `mn_addr_preprod122w38gq0wfzvnrd757zej6vy5nryjr54ku3yfk2skl6q492n7frq06u9sf` | 10 | Sep 18 |
 | 22 | Pradipto Haldar | `mn_addr_preprod1c32lg5rkrlmda2s5aknwcarshzsrrx0pry8pm7mvhuc7dg0hln0syd8rg7` | 10 | Sep 18 |
-| 23 | Debanjali Chatterjee | `mn_addr_preprod1cxx2qszmxgf96gcld2qnt84vaeumn238hma82e59y9jj7gjc8p8sap5d4f` | 9 | Sep 18 |
-| 24 | Aabes Sarkar | `mn_addr_preprod13rs8z572up7qw25j2xslmew88jxf3k2h5wsrwp07w3fh88yemgvq887jjg` | 8 | Sep 18 |
-| 25 | Koyeli Kundu | `mn_addr_preprod1snhk2eyw67t3vs657uu5g0v6pws4u37uktl5uj3jj2ls5ftac3aqwyluep` | 9 | Sep 18 |
-| 26 | Oyshee Ghosh | `mn_addr_preprod1d072uk080ngt9wncx3hcp5fjg762wq5s7fyy577fhkfcg4g95lds8yppq4` | 9 | Sep 19 |
+| 23 | Debanjali Chatterjee | `mn_addr_preprod1cxx2qszmxgf96gcld2qnt84vaeumn238hma82e59y9jj7gjc8p8sap5d4f` | 10 | Sep 18 |
+| 24 | Aabes Sarkar | `mn_addr_preprod13rs8z572up7qw25j2xslmew88jxf3k2h5wsrwp07w3fh88yemgvq887jjg` | 9 | Sep 18 |
+| 25 | Koyeli Kundu | `mn_addr_preprod1snhk2eyw67t3vs657uu5g0v6pws4u37uktl5uj3jj2ls5ftac3aqwyluep` | 10 | Sep 18 |
+| 26 | Oyshee Ghosh | `mn_addr_preprod1d072uk080ngt9wncx3hcp5fjg762wq5s7fyy577fhkfcg4g95lds8yppq4` | 10 | Sep 19 |
 | 27 | Arin Das | `mn_addr_preprod18jqnldwdhdxk6haaha707mcrmhvpc5f4pznpt3xx44d2n2y8jassalkjgr` | 10 | Sep 19 |
-| 28 | Subham Neogi | `mn_addr_preprod1d8e3pnwuag82vutdhzuejkh3ywm7hxurz65th9exc24lua7ks86stsd75j` | 8 | Sep 19 |
-| 29 | Anushka Sarkar | `mn_addr_preprod1sggslvd05fqdtkur6kz84vld3h3pexp232enl9u9l6jnyh4zseeqr6r3v7` | 10 | Sep 19 |
-| 30 | Avishikta Bagchi | `mn_addr_preprod1v3rr5v9gqxkp6twzvlq0l85zsu8pvnmar57l2c4jyn8ulql4aaxq2nzz5y` | 7 | Sep 19 |
-| 31 | Sayon Sarkar | `mn_addr_preprod16q7axcpjz6xec30xgqk7vfe2mf2mr0nsp23pfyz65rj0lx5jcmtsghp55w` | 9 | Sep 19 |
-| 32 | Sohana Ghosh | `mn_addr_preprod1ltmj8urdpevp3zdpax5c80lnlc2e83xs3dqgftqjv2ulfnq0nj4qgvuuz3` | 9 | Sep 19 |
+| 28 | Subham Neogi | `mn_addr_preprod1d8e3pnwuag82vutdhzuejkh3ywm7hxurz65th9exc24lua7ks86stsd75j` | 10 | Sep 19 |
+| 29 | Anushka Sarkar | `mn_addr_preprod1sggslvd05fqdtkur6kz84vld3h3pexp232enl9u9l6jnyh4zseeqr6r3v7` | 8 | Sep 19 |
+| 30 | Avishikta Bagchi | `mn_addr_preprod1v3rr5v9gqxkp6twzvlq0l85zsu8pvnmar57l2c4jyn8ulql4aaxq2nzz5y` | 9 | Sep 19 |
+| 31 | Sayon Sarkar | `mn_addr_preprod16q7axcpjz6xec30xgqk7vfe2mf2mr0nsp23pfyz65rj0lx5jcmtsghp55w` | 8 | Sep 19 |
+| 32 | Sohana Ghosh | `mn_addr_preprod1ltmj8urdpevp3zdpax5c80lnlc2e83xs3dqgftqjv2ulfnq0nj4qgvuuz3` | 10 | Sep 19 |
 | 33 | Moumita Rakshit | `mn_addr_preprod1tdxl2uvfca30mqsnu3z8g7sdr20xkc7mpd2yuc7384suuftfllaszm54fh` | 9 | Sep 19 |
 | 34 | Ayanika Sen | `mn_addr_preprod1ffjf0ng49x6k3wx27gnvn5qkz8xns55r8y5394288s8rmpu5dq5shvkxcz` | 10 | Sep 19 |
 | 35 | Gargi Saha | `mn_addr_preprod126plssmyfh2ene5z4p6820fs82h5l3earkt8z4gq4v90wvkxlg0s78ggk2` | 9 | Sep 19 |
 | 36 | Sreeja Ray | `mn_addr_preprod1h7s7wcx6fdyk54elnapyuz8m7hys2r7m9cjs6wlp7de0rvwk25hqt5vzkk` | 10 | Sep 19 |
-| 37 | Maitri Golder | `mn_addr_preprod1frcdh490mryjpy4ef55mxhl7mlx6s0g2j9qz5pv6y49rkxx7vcvsgn3dak` | 6 | Sep 19 |
+| 37 | Maitri Golder | `mn_addr_preprod1frcdh490mryjpy4ef55mxhl7mlx6s0g2j9qz5pv6y49rkxx7vcvsgn3dak` | 8 | Sep 19 |
 | 38 | Rick Acharjee | `mn_addr_preprod1ehm6s3e6x5xecur5t9pvwjwxn65unhduj0jcl3qu74y7q39j320qlsx39c` | 10 | Sep 19 |
-| 39 | Sarin Sanyal | `mn_addr_preprod10ycpshvqn7hpec5tv0nyyj2w7fggtcjg6fke5glrmh23f5fauqfqr87mst` | 7 | Sep 19 |
-| 40 | Subom Paul | `mn_addr_preprod1gkkyay25ec4h4mhu8rdqrqd428683d63tkx0pmetnprcdurp4fysgrtx5t` | 9 | Sep 19 |
-| 41 | Amitava Pal | `mn_addr_preprod1nyd6v9futt9v3vpvkn07apyd7fl8s884d2edscxef3taexneegmqdfmn6e` | 7 | Sep 19 |
+| 39 | Sarin Sanyal | `mn_addr_preprod10ycpshvqn7hpec5tv0nyyj2w7fggtcjg6fke5glrmh23f5fauqfqr87mst` | 9 | Sep 19 |
+| 40 | Subom Paul | `mn_addr_preprod1gkkyay25ec4h4mhu8rdqrqd428683d63tkx0pmetnprcdurp4fysgrtx5t` | 8 | Sep 19 |
+| 41 | Amitava Pal | `mn_addr_preprod1nyd6v9futt9v3vpvkn07apyd7fl8s884d2edscxef3taexneegmqdfmn6e` | 8 | Sep 19 |
 | 42 | Tamisra Moitra | `mn_addr_preprod1k62wdw7fycndqjgy533cazu5qfxhqvtv0fmqgq5gadc7qn6s4xtswuzdhu` | 10 | Sep 19 |
-| 43 | Shreyak Mitra | `mn_addr_preprod1h86qpnzmy4ep8zf3mu2dpg7u5apxhsskwl83znk5tweqq4uucguq4tyu9h` | 8 | Sep 19 |
+| 43 | Shreyak Mitra | `mn_addr_preprod1h86qpnzmy4ep8zf3mu2dpg7u5apxhsskwl83znk5tweqq4uucguq4tyu9h` | 10 | Sep 19 |
 | 44 | Praloy Sahoo | `mn_addr_preprod17xc9vdngf2tfjfy3h52j900qmacsvrxnxp4legs5xjpnrvq62y3s7ychak` | 10 | Sep 19 |
-| 45 | Reet Banerjee | `mn_addr_preprod1jmdpww7nz7ce8lqt38q3hukwxtgtksfspe9heq9a34meemd67wqqfh7289` | 9 | Sep 19 |
+| 45 | Reet Banerjee | `mn_addr_preprod1jmdpww7nz7ce8lqt38q3hukwxtgtksfspe9heq9a34meemd67wqqfh7289` | 10 | Sep 19 |
 | 46 | Mukta Das | `mn_addr_preprod1f66zgjvpmnh5arwl94fplymyjpe2ztljmlyh5mp5m9yjncyd5v4qgwkjmp` | 8 | Sep 19 |
-| 47 | Adrish Karak | `mn_addr_preprod17h5afvjuxth0ll9fwwxghset70yvjmdsy4r73ylgyktdaugspfasg39zc8` | 10 | Sep 19 |
-| 48 | Upasana Aditya | `mn_addr_preprod1hkcqv6xhmxkqnzg5m0zjxfg9ynq2r2sfdse3c5yeacr8rs6zwn8q6300va` | 10 | Sep 19 |
-| 49 | Sanbartika Ghosh | `mn_addr_preprod1asdehuvhzmmevdvvt9p4dd4uyzudy05rwu9zjq048qzm97ka9qds7t4xez` | 9 | Sep 19 |
-| 50 | Pooja Das | `mn_addr_preprod1kz86ktz9j5ckalqcsa0825ldcc5j9vkdr08tc24hvdtln7c8upss0m849p` | 8 | Sep 20 |
+| 47 | Adrish Karak | `mn_addr_preprod17h5afvjuxth0ll9fwwxghset70yvjmdsy4r73ylgyktdaugspfasg39zc8` | 9 | Sep 19 |
+| 48 | Upasana Aditya | `mn_addr_preprod1hkcqv6xhmxkqnzg5m0zjxfg9ynq2r2sfdse3c5yeacr8rs6zwn8q6300va` | 9 | Sep 19 |
+| 49 | Sanbartika Ghosh | `mn_addr_preprod1asdehuvhzmmevdvvt9p4dd4uyzudy05rwu9zjq048qzm97ka9qds7t4xez` | 10 | Sep 19 |
+| 50 | Pooja Das | `mn_addr_preprod1kz86ktz9j5ckalqcsa0825ldcc5j9vkdr08tc24hvdtln7c8upss0m849p` | 9 | Sep 20 |
 | 51 | Subrata Rakshit | `mn_addr_preprod1c9ev6we5d8a9rgyeke9gceqwk0fgadglnh53vw4dd2d250skyt8qj26ssk` | 10 | Sep 20 |
-| 52 | Antara Bhattacharjee | `mn_addr_preprod1nd9q3armke7gcqtld73a2wlkffmehj0agf4gnytnwp7n7ml8ad3qdx2l7x` | 10 | Sep 20 |
+| 52 | Antara Bhattacharjee | `mn_addr_preprod1nd9q3armke7gcqtld73a2wlkffmehj0agf4gnytnwp7n7ml8ad3qdx2l7x` | 6 | Sep 20 |
 | 53 | Taniya Singh | `mn_addr_preprod19vexpfkvl6qvd427de72pkd34m5lny3clkyqvnyhkfmfun34m4qscnvkfw` | 9 | Sep 20 |
-| 54 | Snigdha | `mn_addr_preprod10s27qn6q9htq085xkjfv5ee0l0vrwvvngz333epnxcd6kxh9az4qklqtx8` | 9 | Sep 21 |
-| 55 | Shreyasi Paul | `mn_addr_preprod10squhl6rdvyyfajdxpsjdzqfk3sqvpqrxem2au0ukc8guafjqurshk6llw` | 8 | Sep 21 |
-| 56 | Srinjoy Mukherjee | `mn_addr_preprod1ad0xaqn06t442zl8fzywmlz6te25wedwpx26zd47fgzcy2jrac6q6qrjf6` | 10 | Sep 21 |
-| 57 | Ayush Sarkar | `mn_addr_preprod1jyylr9cr7534npedze6n7du7wh2ne3g0p8navm3yvkkuytmpx38s8u2ngd` | 9 | Sep 21 |
-| 58 | Soumili Das | `mn_addr_preprod1r8lf8m44mfyl5y827pzw6mjsws2mu0df5uezcnwe46jdj6z2tvxqa4qj8h` | 9 | Sep 21 |
+| 54 | Snigdha | `mn_addr_preprod10s27qn6q9htq085xkjfv5ee0l0vrwvvngz333epnxcd6kxh9az4qklqtx8` | 8 | Sep 21 |
+| 55 | Shreyasi Paul | `mn_addr_preprod10squhl6rdvyyfajdxpsjdzqfk3sqvpqrxem2au0ukc8guafjqurshk6llw` | 10 | Sep 21 |
+| 56 | Srinjoy Mukherjee | `mn_addr_preprod1ad0xaqn06t442zl8fzywmlz6te25wedwpx26zd47fgzcy2jrac6q6qrjf6` | 7 | Sep 21 |
+| 57 | Ayush Sarkar | `mn_addr_preprod1jyylr9cr7534npedze6n7du7wh2ne3g0p8navm3yvkkuytmpx38s8u2ngd` | 6 | Sep 21 |
+| 58 | Soumili Das | `mn_addr_preprod1r8lf8m44mfyl5y827pzw6mjsws2mu0df5uezcnwe46jdj6z2tvxqa4qj8h` | 10 | Sep 21 |
 | 59 | Susmita Rakshit | `mn_addr_preprod1wnn3val5lak6x6kxrkgm4d6lg4cwxh9q4jdmvmsqang38zutdwpqdg84fj` | 10 | Sep 21 |
-| 60 | Rasa Majumdar | `mn_addr_preprod1v6662a3jtlg837znw6dqexy7rmnw82d92y399nsdfj4amz0tjwsqdx3cr2` | 10 | Sep 21 |
-| 61 | Supratik Paul | `mn_addr_preprod100nqstdv9p0capdljmcvtpud95wls8w35rvg5exsc4uuluu0qg9slt57xa` | 6 | Sep 21 |
+| 60 | Rasa Majumdar | `mn_addr_preprod1v6662a3jtlg837znw6dqexy7rmnw82d92y399nsdfj4amz0tjwsqdx3cr2` | 8 | Sep 21 |
+| 61 | Supratik Paul | `mn_addr_preprod100nqstdv9p0capdljmcvtpud95wls8w35rvg5exsc4uuluu0qg9slt57xa` | 8 | Sep 21 |
 | 62 | Mithu Rakshit | `mn_addr_preprod19x6kmaj86rmntwg5ekdueytzpghwltxedgcvljvc4gpjcnxfmqzqsseh2r` | 10 | Sep 21 |
 | 63 | Debasmit Bose | `mn_addr_preprod1zzfgchs7qaenazw93l8vrd6e53l7txpsmhmkm7a2g907xuqf47dqmfkt2f` | 10 | Sep 21 |
 | 64 | Sayanaditya Das | `mn_addr_preprod12sgn0utygaq4wpcq5tp6pkwsxhv8g7vqcc23wx2z70wvl8cvg7asvpkt8v` | 9 | Sep 21 |
 | 65 | Sayantika Haldar | `mn_addr_preprod13r0erl7jhefqtkjreqsym7jxstfdqxhy80lyh2u2zacytz4stgqs6c9thg` | 8 | Sep 21 |
-| 66 | Mourya Saha | `mn_addr_preprod1pag8u6a52f3ncjaxge5jgpx0cs2sd2c2h3hs99ydzy2cuxjmnfjsllnsla` | 9 | Sep 21 |
-| 67 | Srijit Das | `mn_addr_preprod1mps8d2g4l0zzfylxtvtlrelcv0xf9rjlrrgzskj4elewkx444wnqls3pvs` | 10 | Sep 21 |
-| 68 | Ruhani Chakrabarti | `mn_addr_preprod1t73zluhyn0mtzu2ayugwea4hkxczyrfkf75f7spxhrwpwylpy70qx8awua` | 9 | Sep 21 |
-| 69 | Nobojit Mondal | `mn_addr_preprod1gkchxaajreqedepx2m9jheqkxxcj7dkx5ka35d9f72kj9k9xzx0smuy3s4` | 10 | Sep 21 |
+| 66 | Mourya Saha | `mn_addr_preprod1pag8u6a52f3ncjaxge5jgpx0cs2sd2c2h3hs99ydzy2cuxjmnfjsllnsla` | 10 | Sep 21 |
+| 67 | Srijit Das | `mn_addr_preprod1mps8d2g4l0zzfylxtvtlrelcv0xf9rjlrrgzskj4elewkx444wnqls3pvs` | 9 | Sep 21 |
+| 68 | Ruhani Chakrabarti | `mn_addr_preprod1t73zluhyn0mtzu2ayugwea4hkxczyrfkf75f7spxhrwpwylpy70qx8awua` | 10 | Sep 21 |
+| 69 | Nobojit Mondal | `mn_addr_preprod1gkchxaajreqedepx2m9jheqkxxcj7dkx5ka35d9f72kj9k9xzx0smuy3s4` | 9 | Sep 21 |
 | 70 | Anisha Ghosh | `mn_addr_preprod1690euzgz8a9sed7vwly6ms5ggjfs0kv0qxm3nkh4g4xalyt24apq9d6sn5` | 10 | Sep 25 |
 
 ---
@@ -135,4 +135,4 @@ curl -s -X POST https://indexer.preprod.midnight.network/api/v4/graphql \
 
 ---
 
-> **Summary**: 70 unique user wallets + 1 deployer = 71 total addresses. All verified on Midnight Preprod between Sep 17-25, 2026. Average rating: 8.9/10.
+> **Summary**: 70 unique user wallets + 1 deployer = 71 total addresses. All verified on Midnight Preprod between Sep 17-25, 2026. Latest feedback (Round 2, Sep 28-30): average rating **9.0/10**.

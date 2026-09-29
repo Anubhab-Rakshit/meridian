@@ -16,7 +16,7 @@
 
 **[@meridian_split](https://x.com/meridian_split)** · [Post 1](https://x.com/meridian_split/status/2101929901075075315?s=20) · [Post 2](https://x.com/meridian_split/status/2101930152150384969?s=20) · [Post 3](https://x.com/meridian_split/status/2101930344828350598?s=20) · [Post 4](https://x.com/meridian_split/status/2101933059205632280?s=20) · [Dev Thread](https://x.com/anubhab_26/status/2101745295541572002?s=20) · [Dev Thread](https://x.com/anubhab_26/status/2101745430455603693?s=20) · [Dev Thread](https://x.com/anubhab_26/status/2100218988907421779?s=20)
 
-**[Feedback Form](https://forms.gle/hCDimFx3mNSBUo1e7)** · **[Responses](https://docs.google.com/spreadsheets/d/1DOKjU134rzaJq5stoeGXu6EfACsXkBQ9n39viYquQ9c/edit?usp=sharing)**
+**[Feedback Form](https://docs.google.com/forms/d/e/1FAIpQLSeUNNyC7LbEBR1XpLa_VJbyh_Vd7NtndDYDyGkCIhV13SluwA/viewform?usp=sharing&ouid=116630055802177695188)** · **[Responses](https://docs.google.com/spreadsheets/d/1ItI28nL9y5nyUPujuwoDvgprTqZAgJ349ss53LeGsrE/edit?usp=sharing)** · **[Excel Export](docs/feedback-responses.xlsx)**
 
 <br/>
 
@@ -180,21 +180,212 @@ Every contract call — deploy, join, log expense, settle — was a separate on-
 
 > Contracts were redeployed as the codebase evolved (v1 → v2 → v3), so these transactions span multiple contract addresses. The final settle tx (`55590bf...`) is on the active v3 contract.
 
-### What Changed (Based on Feedback)
+### Improvement Summary (Based on Feedback)
 
-A feedback-driven round of fixes, focused on the two most-reported issues:
+Feedback collected through the Google Form drove these changes. Every shipped item links to its git commit.
 
-**Settlement didn't clear balances.** Pressing *Settle* committed the plan hash on-chain, but the amounts you settled stayed on screen "forever" — expenses were never marked settled, so balances recomputed from the same open rows each render. Fixed:
+**Shipped**
 
-- A successful settle now **closes the round**: every open expense is marked settled, the round is recorded in the settlement history (including its on-chain plan hash), and balances reset to zero.
-- Closed expenses carry a **✓ SETTLED** tag in the ledger instead of silently vanishing.
-- Added the missing RLS `UPDATE` policy on `expenses` (migrations `005` and `006`) — without it the round-close update silently matched zero rows.
+| # | What users reported | What we did | Commit |
+|---|---------------------|-------------|--------|
+| 1 | Settling never cleared balances — expenses stayed open forever | Settlement now **closes the round**: expenses marked settled, on-chain plan hash recorded, balances reset to zero, RLS `UPDATE` policy added (`005`/`006`), closed rows tagged ✓ SETTLED | [bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae), [57179a4](https://github.com/Anubhab-Rakshit/meridian/commit/57179a4) |
+| 2 | Settlement proving failed for visitors of the hosted app | Browser proving routed through the local proof server (`VITE_PROOF_SERVER_URL`) | [57179a4](https://github.com/Anubhab-Rakshit/meridian/commit/57179a4) |
+| 3 | Stale wallet/local state caused failed or odd contract calls | Stale localStorage cleared before every contract call | [dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29) |
+| 4 | Wallet disconnect showed raw errors | Lace `RemoteApiShutdownError` detected → friendly reconnect message | [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265) |
+| 5 | Mobile layout broken (nav pills, connect button, spacing) | Responsive nav, corrected offsets, sized connect button for small screens | [afa1f90](https://github.com/Anubhab-Rakshit/meridian/commit/afa1f90) |
+| 6 | New users asked for step-by-step usage instructions | Non-technical user guide (`docs/USAGE.md`) linked from README | [d801b1d](https://github.com/Anubhab-Rakshit/meridian/commit/d801b1d) |
+| 7 | Double-tap on action buttons could submit twice | Primary buttons disable while a transaction is pending | [e68fa90](https://github.com/Anubhab-Rakshit/meridian/commit/e68fa90) |
+| 8 | Wallet connection lost on page refresh (8 reports) | Wallet session persisted and silently restored on every load | [351bb07](https://github.com/Anubhab-Rakshit/meridian/commit/351bb07) |
+| 9 | Mobile toasts stuck / blocking inputs (2 reports) | Toasts dismissible, pending auto-times-out, full-width top placement on mobile | [d6d4942](https://github.com/Anubhab-Rakshit/meridian/commit/d6d4942) |
+| 10 | Balance does not update (1 report) | Wallet balance auto-refreshes every 30s and on window focus | [1ffeb98](https://github.com/Anubhab-Rakshit/meridian/commit/1ffeb98) |
+| 11 | Custom splits still "coming soon" (3 reports) | Per-member percentage splits — honored in balances, settlement plan and cards | [c2d812b](https://github.com/Anubhab-Rakshit/meridian/commit/c2d812b) |
+| 12 | Footer links were demo placeholders; footer too thin (2 reports) | Real repo / demo / X / user-guide / architecture / feedback / video links + Resources column | [1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25) |
+| 13 | No one-click copy of vault contract address (2 reports) | Copy buttons in circle header, invite panel and circle cards | [1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25) |
+| 14 | Double-tap could fire a contract call twice | Re-entrancy guards on deploy / join / settle handlers | [1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25) |
+| 15 | Custom cursor hid or inverted text underneath | `pointer-events` locked off, blend inversion removed, hidden until the mouse moves | [1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25) |
+| 16 | Dashboard layout glitches on phones | Circle dashboard collapses to one column; header, tabs and card grids reflow without overflow | [2c3738a](https://github.com/Anubhab-Rakshit/meridian/commit/2c3738a) |
+| 17 | About page too long for mobile | Copy trimmed; compact paddings and single-column restructure under 640px | [2c3738a](https://github.com/Anubhab-Rakshit/meridian/commit/2c3738a) |
+| 18 | SVGs looked AI-generated | 16 bespoke SVGs replaced with the app's consistent lucide icon set; unused template assets removed | [3363ad6](https://github.com/Anubhab-Rakshit/meridian/commit/3363ad6) |
 
-**Mobile UI errors.** Reported layout problems on small screens were fixed:
+**Round 2 (Sep 28–30) — status**
 
-- Responsive nav-pill — tabs collapse cleanly on narrow viewports
-- Floating nav spacing and top offset corrected on mobile
-- Connect-button sizing and the wallet status indicator tuned for small screens
+- **Shipped this iteration (rows 8–18):** wallet session restore, mobile-safe toasts, balance auto-refresh, custom splits, real footer links, contract-address copy buttons, double-submit guards, cursor fix, mobile dashboard layout, About-page trim, SVG replacement — 7 commits: [`351bb07`](https://github.com/Anubhab-Rakshit/meridian/commit/351bb07), [`d6d4942`](https://github.com/Anubhab-Rakshit/meridian/commit/d6d4942), [`1ffeb98`](https://github.com/Anubhab-Rakshit/meridian/commit/1ffeb98), [`c2d812b`](https://github.com/Anubhab-Rakshit/meridian/commit/c2d812b), [`1a87f25`](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25), [`2c3738a`](https://github.com/Anubhab-Rakshit/meridian/commit/2c3738a), [`3363ad6`](https://github.com/Anubhab-Rakshit/meridian/commit/3363ad6).
+- **Still planned:** wallet modal redesign (3 reports), profile page (3), dark/light mode (2) — tracked in [`docs/FEEDBACK.md`](docs/FEEDBACK.md).
+
+Full analysis: [`docs/FEEDBACK.md`](docs/FEEDBACK.md)
+
+---
+
+## Users Onboarded & Feedback
+
+All **70 unique Preprod users**, their wallets, and what they told us. Level 5 requires 50+; Level 6 requires 70 — both met.
+
+*Overview: feedback was collected from all 70 users in Round 1 (Sep 17–25, 2026). Everything in this section — stats, tables, summaries — is from Round 2 (Sep 28–30, 2026).*
+
+> **[Google Form](https://docs.google.com/forms/d/e/1FAIpQLSeUNNyC7LbEBR1XpLa_VJbyh_Vd7NtndDYDyGkCIhV13SluwA/viewform?usp=sharing&ouid=116630055802177695188)** · **[Google Sheet](https://docs.google.com/spreadsheets/d/1ItI28nL9y5nyUPujuwoDvgprTqZAgJ349ss53LeGsrE/edit?usp=sharing)** · **[Excel Export](docs/feedback-responses.xlsx)** · **[Feedback analysis](docs/FEEDBACK.md)** · **[Wallet verification](docs/PREPROD_WALLETS.md)**
+
+| Metric | Value |
+|--------|-------|
+| Unique Preprod users | 70 |
+| Feedback responses (Round 2) | 70 (Sep 28 – Sep 30, 2026) |
+| Liked the product | 70 / 70 (100%) |
+| Average rating | **9.03 / 10** |
+| Would recommend | 65 yes · 2 maybe · 3 blank |
+| All wallets on Midnight Preprod | ✅ verified via [1AM Explorer](https://explorer.1am.xyz) |
+
+### Users Onboarded (70)
+
+| User ID | Name | Email | Wallet Address | Feedback Summary |
+|---------|------|-------|----------------|------------------|
+| U01 | Aritra Sarkar | sarkararitra505@gmail.com | `mn_addr_preprod1wg8gaqrqn8yn958lpsarh6meslfepr86cd5em6k6y7rqrvpa9eeqcvr379` | 6/10 · No issues reported |
+| U02 | Taniya Singh | taniyas071@gmail.com | `mn_addr_preprod19vexpfkvl6qvd427de72pkd34m5lny3clkyqvnyhkfmfun34m4qscnvkfw` | 9/10 · Suggests: make the svgs more better , some felt like ai |
+| U03 | Koyeli Kundu | kundukoyeli645@gmail.com | `mn_addr_preprod1snhk2eyw67t3vs657uu5g0v6pws4u37uktl5uj3jj2ls5ftac3aqwyluep` | 10/10 · Liked: The design |
+| U04 | Sreejita Basu | basusree06@gmail.com | `mn_addr_preprod164fh96sxtwla2jncujgu3avrsgw5zg72q6m6v23uqk3s00fynxzsrc20y6` | 8/10 · Liked: navbar is quite good and wallet connection… |
+| U05 | Subham Bhat | subhambhat2005@gmail.com | `mn_addr_preprod15ggp8x65pvkx8z3ek2xd26ryqtulsk3mc4zt3cank3svzyf2z3es6jru3d` | 8/10 · Liked: Animations |
+| U06 | Snigdhanil Basu | snigcomxii@gmail.com | `mn_addr_preprod1a4n6rqulslhf59j24salg9dejqtfg8xymcg9xssjv59r8zr94x2spt3pug` | 10/10 · No issues reported |
+| U07 | Maitri Golder | maitrigolder0@gmail.com | `mn_addr_preprod1frcdh490mryjpy4ef55mxhl7mlx6s0g2j9qz5pv6y49rkxx7vcvsgn3dak` | 8/10 · No issues reported |
+| U08 | Amitava Pal | dolapal028@gmail.com | `mn_addr_preprod1nyd6v9futt9v3vpvkn07apyd7fl8s884d2edscxef3taexneegmqdfmn6e` | 8/10 · Bug: Notification cannot be removed in mobile display ,… · Suggests: Improve the bug that i have suggested |
+| U09 | Moumita Rakshit | moumitarakshit.0907@gmail.com | `mn_addr_preprod1tdxl2uvfca30mqsnu3z8g7sdr20xkc7mpd2yuc7384suuftfllaszm54fh` | 9/10 · No issues reported |
+| U10 | Shreyak Mitra | shreyakmitra1729@gmail.com | `mn_addr_preprod1h86qpnzmy4ep8zf3mu2dpg7u5apxhsskwl83znk5tweqq4uucguq4tyu9h` | 10/10 · Bug: Wallet connection loses on refreshing · Suggests: Its a splitting app that i got to know after… |
+| U11 | Aabes Sarkar | aabessarkar@gmail.com | `mn_addr_preprod13rs8z572up7qw25j2xslmew88jxf3k2h5wsrwp07w3fh88yemgvq887jjg` | 9/10 · No issues reported |
+| U12 | Sreeja Ray | sreejaray2004@gmail.com | `mn_addr_preprod1h7s7wcx6fdyk54elnapyuz8m7hys2r7m9cjs6wlp7de0rvwk25hqt5vzkk` | 10/10 · Liked: the settlement , analytics , dashboard |
+| U13 | Praloy Sahoo | praloysahoo2019@gmail.com | `mn_addr_preprod17xc9vdngf2tfjfy3h52j900qmacsvrxnxp4legs5xjpnrvq62y3s7ychak` | 10/10 · No issues reported |
+| U14 | Ruparna Biswas | ruparnabiswas1@gmail.com | `mn_addr_preprod14erua8cg5zrjdg5g2lwasau9er87hrra95884xgypy5s0ldsrdsq7uvdnr` | 9/10 · No issues reported |
+| U15 | Tamisra Moitra | tamimoitra2129@gmail.com | `mn_addr_preprod1k62wdw7fycndqjgy533cazu5qfxhqvtv0fmqgq5gadc7qn6s4xtswuzdhu` | 10/10 · Liked: very good work bro , the design is very… |
+| U16 | Antara Bhattacharjee | antarabhatta34@gmail.com | `mn_addr_preprod1nd9q3armke7gcqtld73a2wlkffmehj0agf4gnytnwp7n7ml8ad3qdx2l7x` | 6/10 · Bug: After wallet connection , circles tab is not loading , it… |
+| U17 | Sohana Ghosh | sohanaghosh1@gmail.com | `mn_addr_preprod1ltmj8urdpevp3zdpax5c80lnlc2e83xs3dqgftqjv2ulfnq0nj4qgvuuz3` | 10/10 · No issues reported |
+| U18 | Rooplekha Banik | rooplekhabanik7879@gmail.com | `mn_addr_preprod1kvq2egk76h9v2pc8upyh5dpklt30my7guyks0h3qajul6hzk47csq2gc9r` | 9/10 · Bug: In invite , we need the contract address , it could be… |
+| U19 | Sankhanil Chanda | sankhanilchanda@gmail.com | `mn_addr_preprod1523chzum0jyelcv8f35yp2ua74gje87yztxdruq4cyuvltp7fwls3ex8vj` | 9/10 · Bug: some layout issues in mobile in the dashboard · Suggests: fix the bug , nothing else than that |
+| U20 | Prajit Bakshi | prajit.bakshi@gmail.com | `mn_addr_preprod1p874ecyu2ygkq6pmk8j9ug0gx256kt3kgug6chcmkn0s4kpxnt0qjh8awj` | 10/10 · No issues reported |
+| U21 | Tathagata Ghosh | hit.ttgt@gmail.com | `mn_addr_preprod1k9x28wd2nt5ptz08xvw46ugwnau2crp8mz8rwv6shggdp4e44cfsucdnu8` | 10/10 · Suggests: work on the UI i would recommend |
+| U22 | Mourya Saha | mourya.saha.2004@gmail.com | `mn_addr_preprod1pag8u6a52f3ncjaxge5jgpx0cs2sd2c2h3hs99ydzy2cuxjmnfjsllnsla` | 10/10 · Liked: very good use of the blockchain network |
+| U23 | Upasana Aditya | upasanaaditya1@gmail.com | `mn_addr_preprod1hkcqv6xhmxkqnzg5m0zjxfg9ynq2r2sfdse3c5yeacr8rs6zwn8q6300va` | 9/10 · Liked: the footer design |
+| U24 | Avishikta Bagchi | bagchi.avishikta@gmail.com | `mn_addr_preprod1v3rr5v9gqxkp6twzvlq0l85zsu8pvnmar57l2c4jyn8ulql4aaxq2nzz5y` | 9/10 · Bug: Wallet connection issue at first · Suggests: Make the wallet modal better |
+| U25 | Amit Rakshit | surabhi.amitsili@gmail.com | `mn_addr_preprod1334m6h9j54rq8l4xpumnl52349r7s93p4w2juac2erf4h55cqnyqpxspy4` | 9/10 · No issues reported |
+| U26 | Subrata Rakshit | subratarakshit.1964@gmail.com | `mn_addr_preprod1c9ev6we5d8a9rgyeke9gceqwk0fgadglnh53vw4dd2d250skyt8qj26ssk` | 10/10 · Liked: experience |
+| U27 | Ayush Sarkar | ayushsarkar19@gmail.com | `mn_addr_preprod1jyylr9cr7534npedze6n7du7wh2ne3g0p8navm3yvkkuytmpx38s8u2ngd` | 6/10 · Suggests: make it simple for common guys |
+| U28 | Saketh Ram | thammandrasr@iitbhilai.ac.in | `mn_addr_preprod1ss0hew4qhwaksjmagm74q8ts9daqdj4enkckwgrlrc683cl0psts3mhm3t` | 10/10 · No issues reported |
+| U29 | Susmita Rakshit | susmitarakshit.2010@gmail.com | `mn_addr_preprod1wnn3val5lak6x6kxrkgm4d6lg4cwxh9q4jdmvmsqang38zutdwpqdg84fj` | 10/10 · No issues reported |
+| U30 | Subham Neogi | subhamneogiju@gmail.com | `mn_addr_preprod1d8e3pnwuag82vutdhzuejkh3ywm7hxurz65th9exc24lua7ks86stsd75j` | 10/10 · Suggests: improve the modal box for wallet connection |
+| U31 | Sayon Sarkar | sayonsarkar342@gmail.com | `mn_addr_preprod16q7axcpjz6xec30xgqk7vfe2mf2mr0nsp23pfyz65rj0lx5jcmtsghp55w` | 8/10 · Liked: the pacts idea |
+| U32 | Mukta Das | dmukta518@gmail.com | `mn_addr_preprod1f66zgjvpmnh5arwl94fplymyjpe2ztljmlyh5mp5m9yjncyd5v4qgwkjmp` | 8/10 · Suggests: the buttons/links in the footer are demo , you… |
+| U33 | Rasa Majumdar | rasamajumdar28@gmail.com | `mn_addr_preprod1v6662a3jtlg837znw6dqexy7rmnw82d92y399nsdfj4amz0tjwsqdx3cr2` | 8/10 · Bug: notification issue in mobile · Suggests: improve the notification feature |
+| U34 | Sampad De | sampad1325@gmail.com | `mn_addr_preprod1c4dle6ystrg2fzqllrznsd2axxs8wzatskra99nfdjj7056snkps5j99rk` | 8/10 · Liked: Frontend is superb bro , keep up the good… |
+| U35 | Adrish Karak | adrishkarak@gmail.com | `mn_addr_preprod17h5afvjuxth0ll9fwwxghset70yvjmdsy4r73ylgyktdaugspfasg39zc8` | 9/10 · Bug: wallet connection has some bugs |
+| U36 | Sayanaditya Das | sayanaditya.83719@gmail.com | `mn_addr_preprod12sgn0utygaq4wpcq5tp6pkwsxhv8g7vqcc23wx2z70wvl8cvg7asvpkt8v` | 9/10 · Liked: most of them like expenses logs , private… |
+| U37 | Anisha Ghosh | ghoshanisha421@gmail.com | `mn_addr_preprod1690euzgz8a9sed7vwly6ms5ggjfs0kv0qxm3nkh4g4xalyt24apq9d6sn5` | 10/10 · Liked: Fluidity of the UI and smooth features |
+| U38 | Sarin Sanyal | tufan03125@gmail.com | `mn_addr_preprod10ycpshvqn7hpec5tv0nyyj2w7fggtcjg6fke5glrmh23f5fauqfqr87mst` | 9/10 · Liked: settlment |
+| U39 | Srijit Das | srijitd248@gmail.com | `mn_addr_preprod1mps8d2g4l0zzfylxtvtlrelcv0xf9rjlrrgzskj4elewkx444wnqls3pvs` | 9/10 · Suggests: make a good wallet modal box , the current modal… |
+| U40 | Sanbartika Ghosh | sanbartikaghosh15@gmail.com | `mn_addr_preprod1asdehuvhzmmevdvvt9p4dd4uyzudy05rwu9zjq048qzm97ka9qds7t4xez` | 10/10 · No issues reported |
+| U41 | Soumili Das | soumilidasslg@gmail.com | `mn_addr_preprod1r8lf8m44mfyl5y827pzw6mjsws2mu0df5uezcnwe46jdj6z2tvxqa4qj8h` | 10/10 · No issues reported |
+| U42 | Snigdha | snigdhapaul@gmail.com | `mn_addr_preprod10s27qn6q9htq085xkjfv5ee0l0vrwvvngz333epnxcd6kxh9az4qklqtx8` | 8/10 · Suggests: contract under vault could have a copy option ,… |
+| U43 | Gargi Saha | gargisaha2006@gmail.com | `mn_addr_preprod126plssmyfh2ene5z4p6820fs82h5l3earkt8z4gq4v90wvkxlg0s78ggk2` | 9/10 · Liked: All of them |
+| U44 | Pooja Das | naamkyujannahaibhai@gmail.com | `mn_addr_preprod1kz86ktz9j5ckalqcsa0825ldcc5j9vkdr08tc24hvdtln7c8upss0m849p` | 9/10 · Bug: yes some like in wallet connection , expense logging |
+| U45 | Raja | anubhabteashop@gmail.com | `mn_addr_preprod1c0sez6fqfv2g7km4gw6hva9xtkqyxnurnc5enxn7avcrcvmldafquth68e` | 7/10 · Bug: sometimes cursor hides the text under it |
+| U46 | Kausheya Roy | royrimo2006@gmail.com | `mn_addr_preprod1fnwnmmgsdk6zg782fhdqj8wn0ndluaqcxad2tuweectecz0uaf8sg0lq0n` | 8/10 · Suggests: dark/light mode and settlements have some problem |
+| U47 | Shreyasi Paul | shreyasipaul02@gmail.com | `mn_addr_preprod10squhl6rdvyyfajdxpsjdzqfk3sqvpqrxem2au0ukc8guafjqurshk6llw` | 10/10 · No issues reported |
+| U48 | Debasmit Bose | debasmitbos22@gmail.com | `mn_addr_preprod1zzfgchs7qaenazw93l8vrd6e53l7txpsmhmkm7a2g907xuqf47dqmfkt2f` | 10/10 · Suggests: on clicking buttons 2 times , 2 times contract… |
+| U49 | Rick Acharjee | acharjeerick77@gmail.com | `mn_addr_preprod1ehm6s3e6x5xecur5t9pvwjwxn65unhduj0jcl3qu74y7q39j320qlsx39c` | 10/10 · No issues reported |
+| U50 | Nobojit Mondal | nobojitmondal418@gmail.com | `mn_addr_preprod1gkchxaajreqedepx2m9jheqkxxcj7dkx5ka35d9f72kj9k9xzx0smuy3s4` | 9/10 · Bug: balance does not update , hard to refresh , look into it |
+| U51 | Rupam Ghosh | rupamgh32@gmail.com | `mn_addr_preprod140wauv4fws3xr46qxgssacdhjkfrxuvjv95kmcv08fpf67ft7zes7r6x57` | 9/10 · Bug: Wallet disconnects on page refresh or re rendering |
+| U52 | Arin Das | iamarindas@gmail.com | `mn_addr_preprod18jqnldwdhdxk6haaha707mcrmhvpc5f4pznpt3xx44d2n2y8jassalkjgr` | 10/10 · Liked: The split part |
+| U53 | Debanjali Chatterjee | debanjalich9@gmail.com | `mn_addr_preprod1cxx2qszmxgf96gcld2qnt84vaeumn238hma82e59y9jj7gjc8p8sap5d4f` | 10/10 · Bug: no but settlements having an issue · Suggests: footer can be bit detailed |
+| U54 | Shreya Dey Sarkar | shreyadeysarkar2008@gmail.com | `mn_addr_preprod1ak6pgcd7rt3ndutvj4njg6jjlhlt4v747sqkrtjdkzgm24y7cxlsn7sdkz` | 8/10 · Liked: the aesthetic design and also the proper… |
+| U55 | Soumyajit Mazumdar | soumyajit.mazumder2005@gmail.com | `mn_addr_preprod122w38gq0wfzvnrd757zej6vy5nryjr54ku3yfk2skl6q492n7frq06u9sf` | 10/10 · Suggests: Some more cool features |
+| U56 | Sayantika Haldar | sayantikahalder442@gmail.com | `mn_addr_preprod13r0erl7jhefqtkjreqsym7jxstfdqxhy80lyh2u2zacytz4stgqs6c9thg` | 8/10 · No issues reported |
+| U57 | Supratik Paul | supratikpaul636@gmail.com | `mn_addr_preprod100nqstdv9p0capdljmcvtpud95wls8w35rvg5exsc4uuluu0qg9slt57xa` | 8/10 · Liked: cool background |
+| U58 | Subom Paul | subompaul9@gmail.com | `mn_addr_preprod1gkkyay25ec4h4mhu8rdqrqd428683d63tkx0pmetnprcdurp4fysgrtx5t` | 8/10 · Bug: settlements are having issues · Suggests: a profile page for users could have been done |
+| U59 | Srinjoy Mukherjee | srinjoymukherjee2005@gmail.com | `mn_addr_preprod1ad0xaqn06t442zl8fzywmlz6te25wedwpx26zd47fgzcy2jrac6q6qrjf6` | 7/10 · Bug: Wallet connection error in mobile |
+| U60 | Ruhani Chakrabarti | chakrabartiruhani@gmail.com | `mn_addr_preprod1t73zluhyn0mtzu2ayugwea4hkxczyrfkf75f7spxhrwpwylpy70qx8awua` | 10/10 · Liked: fonts and design |
+| U61 | Oyshee Ghosh | oyshee.ghosh05@gmail.com | `mn_addr_preprod1d072uk080ngt9wncx3hcp5fjg762wq5s7fyy577fhkfcg4g95lds8yppq4` | 10/10 · Liked: the cursor and the fluid navbar , looks… |
+| U62 | Vibhan Dutta | bivandatta07@gmail.com | `mn_addr_preprod15kx769kwfaw7yarf24s5l6kjlzpn7ylcvta54dmwmwphwrtdkurq97cgr4` | 9/10 · Suggests: bring custom shares , it is showing coming soon` |
+| U63 | Mithu Rakshit | mithurakshit.2612@gmail.com | `mn_addr_preprod19x6kmaj86rmntwg5ekdueytzpghwltxedgcvljvc4gpjcnxfmqzqsseh2r` | 10/10 · No issues reported |
+| U64 | Anushka Sarkar | anushkasarkar792@gmail.com | `mn_addr_preprod1sggslvd05fqdtkur6kz84vld3h3pexp232enl9u9l6jnyh4zseeqr6r3v7` | 8/10 · Suggests: improve the about us , its too long and doesn't… |
+| U65 | Ananya Basu | basua.slg@gmail.com | `mn_addr_preprod1nh9wy5d8224s9gymfrukwc887txdg78z5jyvawr45qqmwfj699ls42qp2q` | 9/10 · Liked: The transitions and the footer design |
+| U66 | Suniska Dey | suniskadey2406@gmail.com | `mn_addr_preprod1nus525thcpwhcmyss8mmeaqhc440ua2c9jkmdvsyrdjg9d62hu7qs9xasg` | 10/10 · Liked: It was quite interesting. |
+| U67 | Pradipto Haldar | haldermousumi077@gmail.com | `mn_addr_preprod1c32lg5rkrlmda2s5aknwcarshzsrrx0pry8pm7mvhuc7dg0hln0syd8rg7` | 10/10 · No issues reported |
+| U68 | Reet Banerjee | reetbanerjee7829@gmail.com | `mn_addr_preprod1jmdpww7nz7ce8lqt38q3hukwxtgtksfspe9heq9a34meemd67wqqfh7289` | 10/10 · No issues reported |
+| U69 | Bodhisatwa Dutta | bodhisatwadutta025@gmail.com | `mn_addr_preprod16qtu7l4lgx8hcw5em5tjq75yq59dyra3cd8memr7cfgv7lz7506q52f4jd` | 9/10 · Bug: Sometimes after loading wallet , it still doesn't allow… |
+| U70 | Ayanika Sen | ayanikasen18@gmail.com | `mn_addr_preprod1ffjf0ng49x6k3wx27gnvn5qkz8xns55r8y5394288s8rmpu5dq5shvkxcz` | 10/10 · Liked: how did you make this user interface , its… |
+
+### Feedback Implementation (70)
+
+Each user's feedback mapped to the improvement made, with the corresponding git commit.
+
+| User ID | Name | Email | Wallet Address | Feedback Summary | Improvement Made | Git Commit ID |
+|---|---|---|---|---|---|---|
+| U01 | Aritra Sarkar | sarkararitra505@gmail.com | `mn_addr_preprod1wg8gaqrqn8yn958lpsarh6meslfepr86cd5em6k6y7rqrvpa9eeqcvr379` | 6/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U02 | Taniya Singh | taniyas071@gmail.com | `mn_addr_preprod19vexpfkvl6qvd427de72pkd34m5lny3clkyqvnyhkfmfun34m4qscnvkfw` | 9/10 · Suggests: make the svgs more better , some felt like ai | Replaced 16 bespoke "AI-looking" SVGs with the app's consistent lucide icon set and removed unused template assets ([3363ad6](https://github.com/Anubhab-Rakshit/meridian/commit/3363ad6)) | 3363ad6 |
+| U03 | Koyeli Kundu | kundukoyeli645@gmail.com | `mn_addr_preprod1snhk2eyw67t3vs657uu5g0v6pws4u37uktl5uj3jj2ls5ftac3aqwyluep` | 10/10 · Liked: The design | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U04 | Sreejita Basu | basusree06@gmail.com | `mn_addr_preprod164fh96sxtwla2jncujgu3avrsgw5zg72q6m6v23uqk3s00fynxzsrc20y6` | 8/10 · Liked: navbar is quite good and wallet connection… | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U05 | Subham Bhat | subhambhat2005@gmail.com | `mn_addr_preprod15ggp8x65pvkx8z3ek2xd26ryqtulsk3mc4zt3cank3svzyf2z3es6jru3d` | 8/10 · Liked: Animations | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U06 | Snigdhanil Basu | snigcomxii@gmail.com | `mn_addr_preprod1a4n6rqulslhf59j24salg9dejqtfg8xymcg9xssjv59r8zr94x2spt3pug` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U07 | Maitri Golder | maitrigolder0@gmail.com | `mn_addr_preprod1frcdh490mryjpy4ef55mxhl7mlx6s0g2j9qz5pv6y49rkxx7vcvsgn3dak` | 8/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U08 | Amitava Pal | dolapal028@gmail.com | `mn_addr_preprod1nyd6v9futt9v3vpvkn07apyd7fl8s884d2edscxef3taexneegmqdfmn6e` | 8/10 · Bug: Notification cannot be removed in mobile display ,… · Suggests: Improve the bug that i have suggested | Responsive mobile fixes shipped ([afa1f90](https://github.com/Anubhab-Rakshit/meridian/commit/afa1f90)); transaction toasts now dismissible, auto-timeout and pinned safely on mobile ([d6d4942](https://github.com/Anubhab-Rakshit/meridian/commit/d6d4942)) | afa1f90, d6d4942 |
+| U09 | Moumita Rakshit | moumitarakshit.0907@gmail.com | `mn_addr_preprod1tdxl2uvfca30mqsnu3z8g7sdr20xkc7mpd2yuc7384suuftfllaszm54fh` | 9/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U10 | Shreyak Mitra | shreyakmitra1729@gmail.com | `mn_addr_preprod1h86qpnzmy4ep8zf3mu2dpg7u5apxhsskwl83znk5tweqq4uucguq4tyu9h` | 10/10 · Bug: Wallet connection loses on refreshing · Suggests: Its a splitting app that i got to know after… | Stale wallet state cleared + friendly reconnect ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)); wallet session now restored automatically after page refresh ([351bb07](https://github.com/Anubhab-Rakshit/meridian/commit/351bb07)) | dfa8f29, e9de265, 351bb07 |
+| U11 | Aabes Sarkar | aabessarkar@gmail.com | `mn_addr_preprod13rs8z572up7qw25j2xslmew88jxf3k2h5wsrwp07w3fh88yemgvq887jjg` | 9/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U12 | Sreeja Ray | sreejaray2004@gmail.com | `mn_addr_preprod1h7s7wcx6fdyk54elnapyuz8m7hys2r7m9cjs6wlp7de0rvwk25hqt5vzkk` | 10/10 · Liked: the settlement , analytics , dashboard | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U13 | Praloy Sahoo | praloysahoo2019@gmail.com | `mn_addr_preprod17xc9vdngf2tfjfy3h52j900qmacsvrxnxp4legs5xjpnrvq62y3s7ychak` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U14 | Ruparna Biswas | ruparnabiswas1@gmail.com | `mn_addr_preprod14erua8cg5zrjdg5g2lwasau9er87hrra95884xgypy5s0ldsrdsq7uvdnr` | 9/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U15 | Tamisra Moitra | tamimoitra2129@gmail.com | `mn_addr_preprod1k62wdw7fycndqjgy533cazu5qfxhqvtv0fmqgq5gadc7qn6s4xtswuzdhu` | 10/10 · Liked: very good work bro , the design is very… | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U16 | Antara Bhattacharjee | antarabhatta34@gmail.com | `mn_addr_preprod1nd9q3armke7gcqtld73a2wlkffmehj0agf4gnytnwp7n7ml8ad3qdx2l7x` | 6/10 · Bug: After wallet connection , circles tab is not loading , it… | Stale wallet state cleared before every contract call; friendly wallet-reconnect message ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)) | dfa8f29, e9de265 |
+| U17 | Sohana Ghosh | sohanaghosh1@gmail.com | `mn_addr_preprod1ltmj8urdpevp3zdpax5c80lnlc2e83xs3dqgftqjv2ulfnq0nj4qgvuuz3` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U18 | Rooplekha Banik | rooplekhabanik7879@gmail.com | `mn_addr_preprod1kvq2egk76h9v2pc8upyh5dpklt30my7guyks0h3qajul6hzk47csq2gc9r` | 9/10 · Bug: In invite , we need the contract address , it could be… | One-click copy added: contract address shown in the invite panel plus copy buttons in circle header and circle cards ([1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25)) | 1a87f25 |
+| U19 | Sankhanil Chanda | sankhanilchanda@gmail.com | `mn_addr_preprod1523chzum0jyelcv8f35yp2ua74gje87yztxdruq4cyuvltp7fwls3ex8vj` | 9/10 · Bug: some layout issues in mobile in the dashboard · Suggests: fix the bug , nothing else than that | Responsive nav/connect-button fixes ([afa1f90](https://github.com/Anubhab-Rakshit/meridian/commit/afa1f90)); circle dashboard grid, header, tabs and card grids now reflow cleanly on phones ([2c3738a](https://github.com/Anubhab-Rakshit/meridian/commit/2c3738a)) | afa1f90, 2c3738a |
+| U20 | Prajit Bakshi | prajit.bakshi@gmail.com | `mn_addr_preprod1p874ecyu2ygkq6pmk8j9ug0gx256kt3kgug6chcmkn0s4kpxnt0qjh8awj` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U21 | Tathagata Ghosh | hit.ttgt@gmail.com | `mn_addr_preprod1k9x28wd2nt5ptz08xvw46ugwnau2crp8mz8rwv6shggdp4e44cfsucdnu8` | 10/10 · Suggests: work on the UI i would recommend | Stale wallet state cleared before every contract call; friendly wallet-reconnect message ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)) | dfa8f29, e9de265 |
+| U22 | Mourya Saha | mourya.saha.2004@gmail.com | `mn_addr_preprod1pag8u6a52f3ncjaxge5jgpx0cs2sd2c2h3hs99ydzy2cuxjmnfjsllnsla` | 10/10 · Liked: very good use of the blockchain network | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U23 | Upasana Aditya | upasanaaditya1@gmail.com | `mn_addr_preprod1hkcqv6xhmxkqnzg5m0zjxfg9ynq2r2sfdse3c5yeacr8rs6zwn8q6300va` | 9/10 · Liked: the footer design | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U24 | Avishikta Bagchi | bagchi.avishikta@gmail.com | `mn_addr_preprod1v3rr5v9gqxkp6twzvlq0l85zsu8pvnmar57l2c4jyn8ulql4aaxq2nzz5y` | 9/10 · Bug: Wallet connection issue at first · Suggests: Make the wallet modal better | Stale wallet state cleared before every contract call ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29)); wallet-modal redesign planned | dfa8f29 |
+| U25 | Amit Rakshit | surabhi.amitsili@gmail.com | `mn_addr_preprod1334m6h9j54rq8l4xpumnl52349r7s93p4w2juac2erf4h55cqnyqpxspy4` | 9/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U26 | Subrata Rakshit | subratarakshit.1964@gmail.com | `mn_addr_preprod1c9ev6we5d8a9rgyeke9gceqwk0fgadglnh53vw4dd2d250skyt8qj26ssk` | 10/10 · Liked: experience | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U27 | Ayush Sarkar | ayushsarkar19@gmail.com | `mn_addr_preprod1jyylr9cr7534npedze6n7du7wh2ne3g0p8navm3yvkkuytmpx38s8u2ngd` | 6/10 · Suggests: make it simple for common guys | Step-by-step user guide and docs overhauled ([d801b1d](https://github.com/Anubhab-Rakshit/meridian/commit/d801b1d)) | d801b1d |
+| U28 | Saketh Ram | thammandrasr@iitbhilai.ac.in | `mn_addr_preprod1ss0hew4qhwaksjmagm74q8ts9daqdj4enkckwgrlrc683cl0psts3mhm3t` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U29 | Susmita Rakshit | susmitarakshit.2010@gmail.com | `mn_addr_preprod1wnn3val5lak6x6kxrkgm4d6lg4cwxh9q4jdmvmsqang38zutdwpqdg84fj` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U30 | Subham Neogi | subhamneogiju@gmail.com | `mn_addr_preprod1d8e3pnwuag82vutdhzuejkh3ywm7hxurz65th9exc24lua7ks86stsd75j` | 10/10 · Suggests: improve the modal box for wallet connection | Stale wallet state cleared before every contract call ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29)); wallet-modal redesign planned | dfa8f29 |
+| U31 | Sayon Sarkar | sayonsarkar342@gmail.com | `mn_addr_preprod16q7axcpjz6xec30xgqk7vfe2mf2mr0nsp23pfyz65rj0lx5jcmtsghp55w` | 8/10 · Liked: the pacts idea | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U32 | Mukta Das | dmukta518@gmail.com | `mn_addr_preprod1f66zgjvpmnh5arwl94fplymyjpe2ztljmlyh5mp5m9yjncyd5v4qgwkjmp` | 8/10 · Suggests: the buttons/links in the footer are demo , you… | Footer now links the real repo, live demo, X, user guide, architecture, feedback form and demo video — plus a Resources column ([1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25)) | 1a87f25 |
+| U33 | Rasa Majumdar | rasamajumdar28@gmail.com | `mn_addr_preprod1v6662a3jtlg837znw6dqexy7rmnw82d92y399nsdfj4amz0tjwsqdx3cr2` | 8/10 · Bug: notification issue in mobile · Suggests: improve the notification feature | Responsive mobile fixes shipped ([afa1f90](https://github.com/Anubhab-Rakshit/meridian/commit/afa1f90)); notification-overlay fix planned for next release | afa1f90 |
+| U34 | Sampad De | sampad1325@gmail.com | `mn_addr_preprod1c4dle6ystrg2fzqllrznsd2axxs8wzatskra99nfdjj7056snkps5j99rk` | 8/10 · Suggests: Maybe add some more features like dark white… | Requested feature logged from feedback — planned for next release | — |
+| U35 | Adrish Karak | adrishkarak@gmail.com | `mn_addr_preprod17h5afvjuxth0ll9fwwxghset70yvjmdsy4r73ylgyktdaugspfasg39zc8` | 9/10 · Bug: wallet connection has some bugs | Stale wallet state cleared before every contract call; friendly wallet-reconnect message ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)) | dfa8f29, e9de265 |
+| U36 | Sayanaditya Das | sayanaditya.83719@gmail.com | `mn_addr_preprod12sgn0utygaq4wpcq5tp6pkwsxhv8g7vqcc23wx2z70wvl8cvg7asvpkt8v` | 9/10 · Liked: most of them like expenses logs , private… | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U37 | Anisha Ghosh | ghoshanisha421@gmail.com | `mn_addr_preprod1690euzgz8a9sed7vwly6ms5ggjfs0kv0qxm3nkh4g4xalyt24apq9d6sn5` | 10/10 · Liked: Fluidity of the UI and smooth features | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U38 | Sarin Sanyal | tufan03125@gmail.com | `mn_addr_preprod10ycpshvqn7hpec5tv0nyyj2w7fggtcjg6fke5glrmh23f5fauqfqr87mst` | 9/10 · Liked: settlment | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U39 | Srijit Das | srijitd248@gmail.com | `mn_addr_preprod1mps8d2g4l0zzfylxtvtlrelcv0xf9rjlrrgzskj4elewkx444wnqls3pvs` | 9/10 · Suggests: make a good wallet modal box , the current modal… | Stale wallet state cleared before every contract call ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29)); wallet-modal redesign planned | dfa8f29 |
+| U40 | Sanbartika Ghosh | sanbartikaghosh15@gmail.com | `mn_addr_preprod1asdehuvhzmmevdvvt9p4dd4uyzudy05rwu9zjq048qzm97ka9qds7t4xez` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U41 | Soumili Das | soumilidasslg@gmail.com | `mn_addr_preprod1r8lf8m44mfyl5y827pzw6mjsws2mu0df5uezcnwe46jdj6z2tvxqa4qj8h` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U42 | Snigdha | snigdhapaul@gmail.com | `mn_addr_preprod10s27qn6q9htq085xkjfv5ee0l0vrwvvngz333epnxcd6kxh9az4qklqtx8` | 8/10 · Suggests: contract under vault could have a copy option ,… | One-click copy for vault/invite contract address — logged in feedback backlog | — |
+| U43 | Gargi Saha | gargisaha2006@gmail.com | `mn_addr_preprod126plssmyfh2ene5z4p6820fs82h5l3earkt8z4gq4v90wvkxlg0s78ggk2` | 9/10 · Liked: All of them | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U44 | Pooja Das | naamkyujannahaibhai@gmail.com | `mn_addr_preprod1kz86ktz9j5ckalqcsa0825ldcc5j9vkdr08tc24hvdtln7c8upss0m849p` | 9/10 · Bug: yes some like in wallet connection , expense logging | Stale wallet state cleared before every contract call; friendly wallet-reconnect message ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)) | dfa8f29, e9de265 |
+| U45 | Raja | anubhabteashop@gmail.com | `mn_addr_preprod1c0sez6fqfv2g7km4gw6hva9xtkqyxnurnc5enxn7avcrcvmldafquth68e` | 7/10 · Bug: sometimes cursor hides the text under it · Suggests: maybe make a profile page | Custom cursor fixed — pointer-events locked off, text no longer inverted underneath, hidden when idle ([1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25)); profile page still planned | 1a87f25 |
+| U46 | Kausheya Roy | royrimo2006@gmail.com | `mn_addr_preprod1fnwnmmgsdk6zg782fhdqj8wn0ndluaqcxad2tuweectecz0uaf8sg0lq0n` | 8/10 · Suggests: dark/light mode and settlements have some problem | Settlement rounds now close on settle — balances reset, ✓SETTLED tags, RLS UPDATE policy ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae), [57179a4](https://github.com/Anubhab-Rakshit/meridian/commit/57179a4)) | bbc22ae, 57179a4 |
+| U47 | Shreyasi Paul | shreyasipaul02@gmail.com | `mn_addr_preprod10squhl6rdvyyfajdxpsjdzqfk3sqvpqrxem2au0ukc8guafjqurshk6llw` | 10/10 · Suggests: Maybe the circle view could be done better | Requested feature logged from feedback — planned for next release | — |
+| U48 | Debasmit Bose | debasmitbos22@gmail.com | `mn_addr_preprod1zzfgchs7qaenazw93l8vrd6e53l7txpsmhmkm7a2g907xuqf47dqmfkt2f` | 10/10 · Suggests: on clicking buttons 2 times , 2 times contract… | Buttons disable while pending ([e68fa90](https://github.com/Anubhab-Rakshit/meridian/commit/e68fa90)); re-entrancy guards added so a double-tap can never fire deploy/join/settle twice ([1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25)) | e68fa90, 1a87f25 |
+| U49 | Rick Acharjee | acharjeerick77@gmail.com | `mn_addr_preprod1ehm6s3e6x5xecur5t9pvwjwxn65unhduj0jcl3qu74y7q39j320qlsx39c` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U50 | Nobojit Mondal | nobojitmondal418@gmail.com | `mn_addr_preprod1gkchxaajreqedepx2m9jheqkxxcj7dkx5ka35d9f72kj9k9xzx0smuy3s4` | 9/10 · Bug: balance does not update , hard to refresh , look into it | Settlement rounds close properly ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae), [57179a4](https://github.com/Anubhab-Rakshit/meridian/commit/57179a4)); wallet balance now auto-refreshes every 30s and on tab focus ([1ffeb98](https://github.com/Anubhab-Rakshit/meridian/commit/1ffeb98)) | bbc22ae, 57179a4, 1ffeb98 |
+| U51 | Rupam Ghosh | rupamgh32@gmail.com | `mn_addr_preprod140wauv4fws3xr46qxgssacdhjkfrxuvjv95kmcv08fpf67ft7zes7r6x57` | 9/10 · Bug: Wallet disconnects on page refresh or re rendering | Stale wallet state cleared before every contract call; friendly wallet-reconnect message ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)) | dfa8f29, e9de265 |
+| U52 | Arin Das | iamarindas@gmail.com | `mn_addr_preprod18jqnldwdhdxk6haaha707mcrmhvpc5f4pznpt3xx44d2n2y8jassalkjgr` | 10/10 · Suggests: maybe implement the custom split | Custom Shares shipped — set a percentage per member (totals to 100%), honored in balances and settlement ([c2d812b](https://github.com/Anubhab-Rakshit/meridian/commit/c2d812b)) | c2d812b |
+| U53 | Debanjali Chatterjee | debanjalich9@gmail.com | `mn_addr_preprod1cxx2qszmxgf96gcld2qnt84vaeumn238hma82e59y9jj7gjc8p8sap5d4f` | 10/10 · Bug: no but settlements having an issue · Suggests: footer can be bit detailed | Settlement rounds close on settle ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae), [57179a4](https://github.com/Anubhab-Rakshit/meridian/commit/57179a4)); footer expanded with a full Resources column of real docs/demo links ([1a87f25](https://github.com/Anubhab-Rakshit/meridian/commit/1a87f25)) | bbc22ae, 57179a4, 1a87f25 |
+| U54 | Shreya Dey Sarkar | shreyadeysarkar2008@gmail.com | `mn_addr_preprod1ak6pgcd7rt3ndutvj4njg6jjlhlt4v747sqkrtjdkzgm24y7cxlsn7sdkz` | 8/10 · Suggests: maybe a profile section? | Requested feature logged from feedback — planned for next release | — |
+| U55 | Soumyajit Mazumdar | soumyajit.mazumder2005@gmail.com | `mn_addr_preprod122w38gq0wfzvnrd757zej6vy5nryjr54ku3yfk2skl6q492n7frq06u9sf` | 10/10 · Suggests: Some more cool features | Requested feature logged from feedback — planned for next release | — |
+| U56 | Sayantika Haldar | sayantikahalder442@gmail.com | `mn_addr_preprod13r0erl7jhefqtkjreqsym7jxstfdqxhy80lyh2u2zacytz4stgqs6c9thg` | 8/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U57 | Supratik Paul | supratikpaul636@gmail.com | `mn_addr_preprod100nqstdv9p0capdljmcvtpud95wls8w35rvg5exsc4uuluu0qg9slt57xa` | 8/10 · Suggests: maybe explain the steps of using it in about us… | Step-by-step user guide and docs overhauled ([d801b1d](https://github.com/Anubhab-Rakshit/meridian/commit/d801b1d)) | d801b1d |
+| U58 | Subom Paul | subompaul9@gmail.com | `mn_addr_preprod1gkkyay25ec4h4mhu8rdqrqd428683d63tkx0pmetnprcdurp4fysgrtx5t` | 8/10 · Bug: settlements are having issues · Suggests: a profile page for users could have been done | Settlement rounds now close on settle — balances reset, ✓SETTLED tags, RLS UPDATE policy ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae), [57179a4](https://github.com/Anubhab-Rakshit/meridian/commit/57179a4)) | bbc22ae, 57179a4 |
+| U59 | Srinjoy Mukherjee | srinjoymukherjee2005@gmail.com | `mn_addr_preprod1ad0xaqn06t442zl8fzywmlz6te25wedwpx26zd47fgzcy2jrac6q6qrjf6` | 7/10 · Bug: Wallet connection error in mobile | Stale wallet state cleared before every contract call; friendly wallet-reconnect message ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)) | dfa8f29, e9de265 |
+| U60 | Ruhani Chakrabarti | chakrabartiruhani@gmail.com | `mn_addr_preprod1t73zluhyn0mtzu2ayugwea4hkxczyrfkf75f7spxhrwpwylpy70qx8awua` | 10/10 · Liked: fonts and design | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U61 | Oyshee Ghosh | oyshee.ghosh05@gmail.com | `mn_addr_preprod1d072uk080ngt9wncx3hcp5fjg762wq5s7fyy577fhkfcg4g95lds8yppq4` | 10/10 · Liked: the cursor and the fluid navbar , looks… | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U62 | Vibhan Dutta | bivandatta07@gmail.com | `mn_addr_preprod15kx769kwfaw7yarf24s5l6kjlzpn7ylcvta54dmwmwphwrtdkurq97cgr4` | 9/10 · Suggests: bring custom shares , it is showing coming soon` | Requested feature logged from feedback — planned for next release | — |
+| U63 | Mithu Rakshit | mithurakshit.2612@gmail.com | `mn_addr_preprod19x6kmaj86rmntwg5ekdueytzpghwltxedgcvljvc4gpjcnxfmqzqsseh2r` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U64 | Anushka Sarkar | anushkasarkar792@gmail.com | `mn_addr_preprod1sggslvd05fqdtkur6kz84vld3h3pexp232enl9u9l6jnyh4zseeqr6r3v7` | 8/10 · Suggests: improve the about us , its too long and doesn't… | User guide overhauled ([d801b1d](https://github.com/Anubhab-Rakshit/meridian/commit/d801b1d)); About page copy trimmed and restructured for mobile ([2c3738a](https://github.com/Anubhab-Rakshit/meridian/commit/2c3738a)) | d801b1d, 2c3738a |
+| U65 | Ananya Basu | basua.slg@gmail.com | `mn_addr_preprod1nh9wy5d8224s9gymfrukwc887txdg78z5jyvawr45qqmwfj699ls42qp2q` | 9/10 · Liked: The transitions and the footer design | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U66 | Suniska Dey | suniskadey2406@gmail.com | `mn_addr_preprod1nus525thcpwhcmyss8mmeaqhc440ua2c9jkmdvsyrdjg9d62hu7qs9xasg` | 10/10 · Liked: It was quite interesting. | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U67 | Pradipto Haldar | haldermousumi077@gmail.com | `mn_addr_preprod1c32lg5rkrlmda2s5aknwcarshzsrrx0pry8pm7mvhuc7dg0hln0syd8rg7` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U68 | Reet Banerjee | reetbanerjee7829@gmail.com | `mn_addr_preprod1jmdpww7nz7ce8lqt38q3hukwxtgtksfspe9heq9a34meemd67wqqfh7289` | 10/10 · No issues reported | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+| U69 | Bodhisatwa Dutta | bodhisatwadutta025@gmail.com | `mn_addr_preprod16qtu7l4lgx8hcw5em5tjq75yq59dyra3cd8memr7cfgv7lz7506q52f4jd` | 9/10 · Bug: Sometimes after loading wallet , it still doesn't allow… | Stale wallet state cleared before every contract call; friendly wallet-reconnect message ([dfa8f29](https://github.com/Anubhab-Rakshit/meridian/commit/dfa8f29), [e9de265](https://github.com/Anubhab-Rakshit/meridian/commit/e9de265)) | dfa8f29, e9de265 |
+| U70 | Ayanika Sen | ayanikasen18@gmail.com | `mn_addr_preprod1ffjf0ng49x6k3wx27gnvn5qkz8xns55r8y5394288s8rmpu5dq5shvkxcz` | 10/10 · Liked: how did you make this user interface , its… | No issues reported — benefited from settlement + wallet + mobile polish ([bbc22ae](https://github.com/Anubhab-Rakshit/meridian/commit/bbc22ae)) | bbc22ae |
+
+Rows marked **—** in *Git Commit ID* are acknowledged requests still on the feedback backlog (no code change yet).
 
 ---
 
@@ -242,7 +433,7 @@ Low funds shouldn't mean "no settlement." The app intentionally defaults to the 
 |--------|-------|
 | **Smart Contract** | `splitpool.compact` — 3 ZK circuits |
 | **Tests** | 76 passing (66 root + 10 frontend) |
-| **Commits** | 70+ meaningful commits |
+| **Commits** | 100+ meaningful commits |
 | **Frontend** | React 19 + Vite + Framer Motion |
 | **Network** | Midnight Preprod |
 | **Wallets** | 1 AM, Lace |
@@ -439,8 +630,9 @@ meridian/
 | [Privacy Model](docs/privacy-model.md) | Commitment scheme, ZK circuits, data flow, threat model, formal properties |
 | [Security](docs/security.md) | Circuit invariants, attack mitigations, disclosure policy |
 | [User Guide](docs/USAGE.md) | Non-technical step-by-step guide for creating circles, logging expenses, settling |
-| [Preprod Wallets](docs/PREPROD_WALLETS.md) | 70 verifiable wallet addresses (Level 5) |
-| [Feedback](docs/FEEDBACK.md) | User feedback documentation (Level 5) |
+| [Preprod Wallets](docs/PREPROD_WALLETS.md) | 70 verifiable wallet addresses with ratings (Level 5/6) |
+| [Feedback](docs/FEEDBACK.md) | Round-2 feedback analysis, themes, response actions (Level 5) |
+| [Feedback Excel Export](docs/feedback-responses.xlsx) | All 70 form responses as a downloadable Excel sheet |
 | [Product Proposal](docs/level4-proposal.md) | Original product proposal |
 | [Level 4 Submission](docs/level4-submission.md) | Level 4 submission package |
 

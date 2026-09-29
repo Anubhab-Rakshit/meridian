@@ -77,60 +77,44 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ members, onAddExpense 
     }
   };
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    padding: '1rem',
-    fontFamily: 'var(--font-mono)',
-    fontSize: '12px',
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '8px',
-    color: '#fff',
-    outline: 'none',
-  };
-
-  const splitButtonStyle = (active: boolean): React.CSSProperties => ({
-    flex: 1,
-    padding: '0.75rem',
-    background: active ? 'rgba(212,175,55,0.1)' : 'transparent',
-    border: `1px solid ${active ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)'}`,
-    color: active ? 'var(--accent-gold)' : 'var(--text-muted)',
-    borderRadius: '8px',
-    fontFamily: 'var(--font-mono)',
-    fontSize: '11px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '0.5rem',
-  });
 
   return (
     <motion.form
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       onSubmit={handleSubmit}
+      className="glass-panel"
       style={{
-        padding: '2rem',
-        background: 'rgba(255,255,255,0.02)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        borderRadius: '16px',
+        padding: '2.5rem',
         display: 'flex',
         flexDirection: 'column',
         gap: '1.5rem',
-        backdropFilter: 'blur(20px)'
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-        <div style={{ padding: '0.5rem', background: 'rgba(212,175,55,0.1)', borderRadius: '8px', color: 'var(--accent-gold)' }}>
-          <Plus size={16} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+        <div style={{ 
+          padding: '0.6rem', 
+          background: 'rgba(212,175,55,0.08)', 
+          border: '1px solid rgba(212,175,55,0.25)',
+          borderRadius: '10px', 
+          color: 'var(--accent-gold)',
+          boxShadow: '0 0 15px rgba(212, 175, 55, 0.15)'
+        }}>
+          <Plus size={18} />
         </div>
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#fff', margin: 0 }}>Log New Expense</h3>
+        <div>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.75rem', color: '#fff', margin: 0, fontStyle: 'italic', fontWeight: 400 }}>
+            Log New Expense
+          </h3>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)', marginTop: '0.35rem', letterSpacing: '0.05em' }}>
+            Amounts are hashed as ZK commitments.
+          </p>
+        </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+      <div style={{ display: 'flex', gap: '1.25rem', width: '100%' }}>
         <div style={{ flex: 2 }}>
-          <label style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--accent-gold)', letterSpacing: '0.2em', display: 'block', marginBottom: '0.75rem' }}>
+          <label style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-gold)', letterSpacing: '0.2em', display: 'block', marginBottom: '0.75rem', fontWeight: 600 }}>
             DESCRIPTION
           </label>
           <input
@@ -138,11 +122,11 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ members, onAddExpense 
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             placeholder="e.g. Dinner at Dorsia"
-            style={inputStyle}
+            className="premium-input"
           />
         </div>
         <div style={{ flex: 1 }}>
-          <label style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--accent-gold)', letterSpacing: '0.2em', display: 'block', marginBottom: '0.75rem' }}>
+          <label style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-gold)', letterSpacing: '0.2em', display: 'block', marginBottom: '0.75rem', fontWeight: 600 }}>
             AMOUNT ($)
           </label>
           <input
@@ -152,68 +136,72 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ members, onAddExpense 
             placeholder="0.00"
             min="0"
             step="0.01"
-            style={inputStyle}
+            className="premium-input"
           />
         </div>
       </div>
 
       <div>
-        <label style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--accent-gold)', letterSpacing: '0.2em', display: 'block', marginBottom: '0.75rem' }}>
+        <label style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-gold)', letterSpacing: '0.2em', display: 'block', marginBottom: '0.85rem', fontWeight: 600 }}>
           SPLIT TYPE
         </label>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <button
             type="button"
             onClick={() => setSplitType('equal')}
-            style={splitButtonStyle(splitType === 'equal')}
+            className={`expense-split-btn ${splitType === 'equal' ? 'active' : ''}`}
           >
-            <Users size={14} /> Split Equally
+            <Users size={15} /> Split Equally
           </button>
           <button
             type="button"
             onClick={handleSelectCustom}
-            style={splitButtonStyle(splitType === 'custom')}
+            className={`expense-split-btn ${splitType === 'custom' ? 'active' : ''}`}
           >
-            <Percent size={14} /> Custom Shares
+            <Percent size={15} /> Custom Shares
           </button>
         </div>
       </div>
 
       {splitType === 'custom' && (
-        <div
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.75rem',
-            padding: '1.25rem',
-            background: 'rgba(255,255,255,0.02)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            gap: '1rem',
+            padding: '1.5rem',
+            background: 'rgba(0,0,0,0.2)',
+            border: '1px solid rgba(255,255,255,0.05)',
             borderRadius: '12px',
+            boxShadow: 'inset 0 4px 15px rgba(0,0,0,0.2)'
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--accent-gold)', letterSpacing: '0.2em' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-gold)', letterSpacing: '0.2em', fontWeight: 600 }}>
               CUSTOM SHARES (%)
             </span>
             <span
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '10px',
+                fontSize: '11px',
                 color: sharesValid ? '#34d399' : '#ff5050',
                 fontWeight: 600,
+                letterSpacing: '0.05em'
               }}
             >
-              TOTAL {totalPercentage.toFixed(2)}% {sharesValid ? '✓' : '— must be 100%'}
+              TOTAL {totalPercentage.toFixed(2)}% {sharesValid ? '✓' : '— MUST BE 100%'}
             </span>
           </div>
 
           {members.map((m) => (
-            <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span
                 style={{
                   flex: 1,
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
+                  fontSize: '12px',
                   color: '#fff',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -223,58 +211,49 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ members, onAddExpense 
               >
                 {m.name}
               </span>
-              <input
-                type="number"
-                min="0"
-                max="100"
-                step="0.01"
-                value={customPercentages[m.id] ?? '0'}
-                onChange={(e) =>
-                  setCustomPercentages((prev) => ({ ...prev, [m.id]: e.target.value }))
-                }
-                style={{
-                  ...inputStyle,
-                  width: '90px',
-                  padding: '0.6rem 0.75rem',
-                  textAlign: 'right',
-                }}
-              />
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-muted)' }}>%</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative' }}>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  value={customPercentages[m.id] ?? '0'}
+                  onChange={(e) =>
+                    setCustomPercentages((prev) => ({ ...prev, [m.id]: e.target.value }))
+                  }
+                  className="premium-input"
+                  style={{
+                    width: '100px',
+                    paddingRight: '2rem',
+                    textAlign: 'right',
+                  }}
+                />
+                <span style={{ 
+                  position: 'absolute', 
+                  right: '0.8rem', 
+                  fontFamily: 'var(--font-mono)', 
+                  fontSize: '12px', 
+                  color: 'rgba(255,255,255,0.3)',
+                  pointerEvents: 'none'
+                }}>%</span>
+              </div>
             </div>
           ))}
 
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, marginTop: '0.5rem' }}>
             Each member is charged their share of the total. Shares must add up to 100%.
           </div>
-        </div>
+        </motion.div>
       )}
 
       <button
         type="submit"
         disabled={isSubmitting || !label.trim() || !amount.trim() || (splitType === 'custom' && !sharesValid)}
-        style={{
-          marginTop: '1rem',
-          width: '100%',
-          padding: '1.25rem',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '11px',
-          fontWeight: 600,
-          background: isSubmitting ? 'transparent' : 'var(--accent-gold)',
-          color: isSubmitting ? 'var(--accent-gold)' : '#000',
-          border: isSubmitting ? '1px solid var(--accent-gold)' : 'none',
-          borderRadius: '8px',
-          cursor: isSubmitting ? 'wait' : 'pointer',
-          letterSpacing: '0.1em',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.5rem',
-          opacity: (!label.trim() || !amount.trim() || (splitType === 'custom' && !sharesValid)) ? 0.5 : 1
-        }}
+        className={`expense-submit-btn ${isSubmitting ? 'submitting' : ''}`}
       >
         {isSubmitting ? (
           <>
-            <Loader2 size={14} className="animate-spin" /> PROVING ON-CHAIN...
+            <Loader2 size={16} className="animate-spin" /> PROVING ON-CHAIN...
           </>
         ) : (
           'LOG CONFIDENTIAL EXPENSE'
