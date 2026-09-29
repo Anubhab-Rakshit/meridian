@@ -13,10 +13,12 @@ interface Member {
 interface MemberListProps {
   members: Member[];
   inviteSecret: string;
+  contractAddress: string;
 }
 
-export const MemberList: React.FC<MemberListProps> = ({ members, inviteSecret }) => {
+export const MemberList: React.FC<MemberListProps> = ({ members, inviteSecret, contractAddress }) => {
   const [copied, setCopied] = React.useState(false);
+  const [contractCopied, setContractCopied] = React.useState(false);
   const { addToast } = useToast();
 
   const handleCopyInvite = () => {
@@ -24,6 +26,13 @@ export const MemberList: React.FC<MemberListProps> = ({ members, inviteSecret })
     setCopied(true);
     addToast({ type: 'success', title: 'Invite Secret Copied', message: 'Share this secret phrase with your friends to let them join.' });
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCopyContract = async () => {
+    await navigator.clipboard.writeText(contractAddress);
+    setContractCopied(true);
+    addToast({ type: 'success', title: 'Contract Address Copied', message: 'Open it in the Midnight explorer or share it with your group.' });
+    setTimeout(() => setContractCopied(false), 2000);
   };
 
   const formatAddress = (addr: string) => {
@@ -38,38 +47,86 @@ export const MemberList: React.FC<MemberListProps> = ({ members, inviteSecret })
         border: '1px solid rgba(212,175,55,0.2)',
         borderRadius: '16px',
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        flexDirection: 'column',
+        gap: '1.5rem'
       }}>
-        <div>
-          <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--accent-gold)', letterSpacing: '0.2em', margin: '0 0 0.5rem 0' }}>
-            INVITE SECRET
-          </h4>
-          <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: '#fff', letterSpacing: '0.05em' }}>
-            {inviteSecret.replace(/./g, '•').slice(0, 12)}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '1rem',
+          flexWrap: 'wrap'
+        }}>
+          <div>
+            <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--accent-gold)', letterSpacing: '0.2em', margin: '0 0 0.5rem 0' }}>
+              INVITE SECRET
+            </h4>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: '#fff', letterSpacing: '0.05em' }}>
+              {inviteSecret.replace(/./g, '•').slice(0, 12)}
+            </div>
           </div>
+          <button
+            onClick={handleCopyInvite}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              background: 'var(--accent-gold)',
+              color: '#000',
+              border: 'none',
+              borderRadius: '999px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              letterSpacing: '0.1em'
+            }}
+          >
+            {copied ? <Check size={14} /> : <Copy size={14} />}
+            {copied ? 'COPIED!' : 'COPY SECRET'}
+          </button>
         </div>
-        <button
-          onClick={handleCopyInvite}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.75rem 1.5rem',
-            background: 'var(--accent-gold)',
-            color: '#000',
-            border: 'none',
-            borderRadius: '999px',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            letterSpacing: '0.1em'
-          }}
-        >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
-          {copied ? 'COPIED!' : 'COPY SECRET'}
-        </button>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '1rem',
+          flexWrap: 'wrap',
+          paddingTop: '1.5rem',
+          borderTop: '1px solid rgba(212,175,55,0.15)'
+        }}>
+          <div style={{ minWidth: 0 }}>
+            <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--accent-gold)', letterSpacing: '0.2em', margin: '0 0 0.5rem 0' }}>
+              VAULT CONTRACT
+            </h4>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', color: '#fff', letterSpacing: '0.03em', wordBreak: 'break-all' }}>
+              {contractAddress.slice(0, 22)}...{contractAddress.slice(-10)}
+            </div>
+          </div>
+          <button
+            onClick={handleCopyContract}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              background: contractCopied ? 'rgba(52,211,153,0.1)' : 'transparent',
+              color: contractCopied ? '#34d399' : 'var(--accent-gold)',
+              border: `1px solid ${contractCopied ? 'rgba(52,211,153,0.4)' : 'rgba(212,175,55,0.4)'}`,
+              borderRadius: '999px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              letterSpacing: '0.1em'
+            }}
+          >
+            {contractCopied ? <Check size={14} /> : <Copy size={14} />}
+            {contractCopied ? 'COPIED!' : 'COPY ADDRESS'}
+          </button>
+        </div>
       </div>
 
       <div>

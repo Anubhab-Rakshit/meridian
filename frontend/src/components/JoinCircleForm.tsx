@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { X, Hash, Loader2, Circle } from 'lucide-react';
@@ -18,9 +18,11 @@ export const JoinCircleForm: React.FC<JoinCircleFormProps> = ({ onClose }) => {
 
   const { addToast, updateToast } = useToast();
   const { address } = useMidnightWallet();
+  const inflightRef = useRef(false);
 
   const handleJoin = async () => {
-    if (!contractAddress.trim() || !inviteSecret.trim() || !address) return;
+    if (!contractAddress.trim() || !inviteSecret.trim() || !address || inflightRef.current) return;
+    inflightRef.current = true;
 
     setIsJoining(true);
     const toastId = addToast({ type: 'pending', title: 'Joining Circle', message: 'Generating ZK proof of membership...' });
@@ -38,6 +40,7 @@ export const JoinCircleForm: React.FC<JoinCircleFormProps> = ({ onClose }) => {
     } catch (err) {
       updateToast(toastId, { type: 'error', title: 'Join Failed', message: err instanceof Error ? err.message : 'Invalid invite secret' });
     } finally {
+      inflightRef.current = false;
       setIsJoining(false);
     }
   };

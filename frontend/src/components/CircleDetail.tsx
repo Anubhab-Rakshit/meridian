@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCirclesStore, useCircleExpenses, saveExpense, saveSettlement, markCircleExpensesSettled } from '../hooks/useCirclesStore';
 import { useMidnightWallet } from '../context/MidnightWalletContext';
@@ -9,7 +9,8 @@ import { EmptyState } from './EmptyState';
 import { SettlementBoard } from './SettlementBoard';
 import { RecurringPacts } from './RecurringPacts';
 import { AnalyticsDashboard } from './AnalyticsDashboard';
-import { ArrowLeft, ExternalLink, Activity, Users, Shield, Zap } from 'lucide-react';
+import { useToast } from './TransactionToast';
+import { ArrowLeft, ExternalLink, Activity, Users, Shield, Zap, Copy, Check } from 'lucide-react';
 import { computeMinimumTransfers } from '@meridian/netting';
 import { computeCircleAnalytics } from '@meridian/analytics';
 
@@ -28,6 +29,9 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
   const { settle } = useMeridianContract();
 
   const [activeTab, setActiveTab] = useState<Tab>('expenses');
+  const [contractCopied, setContractCopied] = useState(false);
+  const settleInFlightRef = useRef(false);
+  const { addToast } = useToast();
 
   // Expenses still open in the current round (settled ones are history)
   const unsettledExpenses = useMemo(() => expenses.filter((e) => !e.settledAt), [expenses]);
@@ -156,6 +160,14 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
     await refetchExpenses();
   };
 
+  const handleCopyContract = async () => {
+    if (!circle) return;
+    await navigator.clipboard.writeText(circle.contractAddress);
+    setContractCopied(true);
+    addToast({ type: 'success', title: 'Contract Address Copied', message: 'Share it with your group or open it in the Midnight explorer.' });
+    setTimeout(() => setContractCopied(false), 2000);
+  };
+
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
     { id: 'expenses', label: 'Ledger', icon: <Activity size={14} /> },
     { id: 'members', label: 'Members', icon: <Users size={14} /> },
@@ -207,24 +219,48 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '3.5rem', color: '#fff', margin: '0 0 0.5rem 0', lineHeight: 1.1 }}>
             {circle.circleName}
           </h2>
-          <a
-            href={`https://explorer.preprod.midnight.network/address/${circle.contractAddress}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              color: 'var(--text-muted)',
-              textDecoration: 'none',
-              letterSpacing: '0.05em',
-            }}
-          >
-            Contract: {circle.contractAddress.slice(0, 16)}...{circle.contractAddress.slice(-8)}
-            <ExternalLink size={12} style={{ color: 'var(--accent-gold)' }} />
-          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <a
+              href={`https://explorer.preprod.midnight.network/address/${circle.contractAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--text-muted)',
+                textDecoration: 'none',
+                letterSpacing: '0.05em',
+              }}
+            >
+              Contract: {circle.contractAddress.slice(0, 16)}...{circle.contractAddress.slice(-8)}
+              <ExternalLink size={12} style={{ color: 'var(--accent-gold)' }} />
+            </a>
+            <button
+              onClick={handleCopyContract}
+              aria-label="Copy contract address"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                letterSpacing: '0.08em',
+                color: contractCopied ? '#34d399' : 'var(--accent-gold)',
+                background: contractCopied ? 'rgba(52,211,153,0.1)' : 'rgba(212,175,55,0.08)',
+                border: `1px solid ${contractCopied ? 'rgba(52,211,153,0.4)' : 'rgba(212,175,55,0.35)'}`,
+                borderRadius: '6px',
+                padding: '0.35rem 0.6rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {contractCopied ? <Check size={11} /> : <Copy size={11} />}
+              {contractCopied ? 'COPIED' : 'COPY'}
+            </button>
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: '2rem' }}>
@@ -332,7 +368,7 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
           {activeTab === 'members' && (
             <div style={{ maxWidth: '600px' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: '#fff', marginBottom: '2rem' }}>Circle Members</h3>
-              <MemberList members={members} inviteSecret={circle.inviteSecret} />
+              <MemberList members={members} inviteSecret={circle.inviteSecret} contractAddress={circle.contractAddress} />
             </div>
           )}
 
@@ -351,22 +387,28 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
                   settlementPlan={settlementPlan}
                   onSettle={async () => {
                     if (!circle || !settlementPlan || !address) return;
-                    const result = await settle(circle.contractAddress, circle.inviteSecret, settlementPlan);
+                    if (settleInFlightRef.current) return;
+                    settleInFlightRef.current = true;
                     try {
-                      await Promise.all([
-                        saveSettlement({
-                          circleAddress: circle.contractAddress,
-                          transferCount: settlementPlan.transfers.length,
-                          settlementHash: result.settlementHash,
-                          txHash: result.txHash,
-                          blockHeight: result.blockHeight,
-                        }),
-                        markCircleExpensesSettled(circle.contractAddress),
-                      ]);
-                    } catch (err) {
-                      console.warn('[Meridian] Settlement recorded on-chain but failed to update local ledger:', err);
+                      const result = await settle(circle.contractAddress, circle.inviteSecret, settlementPlan);
+                      try {
+                        await Promise.all([
+                          saveSettlement({
+                            circleAddress: circle.contractAddress,
+                            transferCount: settlementPlan.transfers.length,
+                            settlementHash: result.settlementHash,
+                            txHash: result.txHash,
+                            blockHeight: result.blockHeight,
+                          }),
+                          markCircleExpensesSettled(circle.contractAddress),
+                        ]);
+                      } catch (err) {
+                        console.warn('[Meridian] Settlement recorded on-chain but failed to update local ledger:', err);
+                      }
+                      await refetchExpenses();
+                    } finally {
+                      settleInFlightRef.current = false;
                     }
-                    await refetchExpenses();
                   }}
                 />
               ) : (

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCirclesStore } from '../hooks/useCirclesStore';
 import { useMidnightWallet } from '../context/MidnightWalletContext';
-import { Plus, Users, Hash, Clock, ArrowRight } from 'lucide-react';
+import { Plus, Users, Hash, Clock, ArrowRight, Copy, Check } from 'lucide-react';
 import { JoinCircleForm } from './JoinCircleForm';
 import { EmptyState } from './EmptyState';
+import { useToast } from './TransactionToast';
 
 interface CircleListProps {
   onSelectCircle: (circleAddress: string) => void;
@@ -15,6 +16,16 @@ export const CircleList: React.FC<CircleListProps> = ({ onSelectCircle, onCreate
   const { address } = useMidnightWallet();
   const { circles, isLoading } = useCirclesStore(address);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [copiedAddr, setCopiedAddr] = useState<string | null>(null);
+  const { addToast } = useToast();
+
+  const handleCopyContract = async (e: React.MouseEvent, contractAddress: string) => {
+    e.stopPropagation();
+    await navigator.clipboard.writeText(contractAddress);
+    setCopiedAddr(contractAddress);
+    addToast({ type: 'success', title: 'Contract Address Copied', message: 'Share it with your group or open it in the Midnight explorer.' });
+    setTimeout(() => setCopiedAddr(null), 2000);
+  };
 
   const container = {
     hidden: { opacity: 0 },
@@ -159,6 +170,23 @@ export const CircleList: React.FC<CircleListProps> = ({ onSelectCircle, onCreate
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)' }}>
                     <Hash size={12} /> {circle.contractAddress.slice(0, 12)}...{circle.contractAddress.slice(-8)}
+                    <button
+                      onClick={(e) => handleCopyContract(e, circle.contractAddress)}
+                      aria-label="Copy contract address"
+                      title="Copy contract address"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        padding: '0.2rem',
+                        background: 'transparent',
+                        border: 'none',
+                        color: copiedAddr === circle.contractAddress ? '#34d399' : 'var(--accent-gold)',
+                        cursor: 'pointer',
+                        transition: 'color 0.2s ease',
+                      }}
+                    >
+                      {copiedAddr === circle.contractAddress ? <Check size={12} /> : <Copy size={12} />}
+                    </button>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)' }}>
                     <Users size={12} /> Unknown (Encrypted)

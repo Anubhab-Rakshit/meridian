@@ -1,11 +1,21 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Terminal, Disc } from 'lucide-react';
+import { Globe, Terminal, AtSign } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Magnetic } from './Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const GITHUB_URL = 'https://github.com/Anubhab-Rakshit/meridian';
+const USER_GUIDE_URL = 'https://github.com/Anubhab-Rakshit/meridian/blob/main/docs/USAGE.md';
+const ARCHITECTURE_URL = 'https://github.com/Anubhab-Rakshit/meridian/blob/main/docs/architecture.md';
+const FEEDBACK_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeUNNyC7LbEBR1XpLa_VJbyh_Vd7NtndDYDyGkCIhV13SluwA/viewform?usp=sharing&ouid=116630055802177695188';
+const DEMO_VIDEO_URL = 'https://youtu.be/CFae-K52us0';
+const LIVE_DEMO_URL = 'https://meridian-midnight.vercel.app/';
+const X_URL = 'https://x.com/meridian_split';
+
+const externalLinkProps = { target: '_blank', rel: 'noopener noreferrer' } as const;
 
 interface FooterProps {
   onNavigateAbout?: () => void;
@@ -83,12 +93,23 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateAbout }) => {
             )}
           </div>
           
+          <div className="footer-col">
+            <h4 className="footer-heading">RESOURCES</h4>
+            <div className="footer-links">
+              <a href={USER_GUIDE_URL} className="footer-link" {...externalLinkProps}>User Guide</a>
+              <a href={ARCHITECTURE_URL} className="footer-link" {...externalLinkProps}>Architecture</a>
+              <a href={FEEDBACK_FORM_URL} className="footer-link" {...externalLinkProps}>Feedback Form</a>
+              <a href={DEMO_VIDEO_URL} className="footer-link" {...externalLinkProps}>3-Min Demo</a>
+              <a href={GITHUB_URL} className="footer-link" {...externalLinkProps}>GitHub Repository</a>
+            </div>
+          </div>
+
           <div className="footer-col align-right">
             <h4 className="footer-heading">CONNECT</h4>
             <div className="social-links">
-              <Magnetic pull={0.4}><a href="#" className="social-link"><Terminal size={18} /></a></Magnetic>
-              <Magnetic pull={0.4}><a href="#" className="social-link"><Globe size={18} /></a></Magnetic>
-              <Magnetic pull={0.4}><a href="#" className="social-link"><Disc size={18} /></a></Magnetic>
+              <Magnetic pull={0.4}><a href={GITHUB_URL} className="social-link" aria-label="GitHub" {...externalLinkProps}><Terminal size={18} /></a></Magnetic>
+              <Magnetic pull={0.4}><a href={LIVE_DEMO_URL} className="social-link" aria-label="Live demo" {...externalLinkProps}><Globe size={18} /></a></Magnetic>
+              <Magnetic pull={0.4}><a href={X_URL} className="social-link" aria-label="Meridian on X" {...externalLinkProps}><AtSign size={18} /></a></Magnetic>
             </div>
           </div>
         </div>

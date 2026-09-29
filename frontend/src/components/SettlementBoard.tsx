@@ -17,11 +17,14 @@ interface SettlementBoardProps {
 
 export const SettlementBoard: React.FC<SettlementBoardProps> = ({ members, expenses, settlementPlan, onSettle }) => {
   const [isSettling, setIsSettling] = React.useState(false);
+  const inflightRef = React.useRef(false);
   const { addToast, updateToast } = useToast();
 
   const memberNameMap = new Map(members.map((m) => [m.id, m.name]));
 
   const handleSettle = async () => {
+    if (inflightRef.current) return;
+    inflightRef.current = true;
     setIsSettling(true);
     const toastId = addToast({ type: 'pending', title: 'Verifying Settlement', message: 'Generating ZK proof for the settlement plan...' });
     try {
@@ -30,6 +33,7 @@ export const SettlementBoard: React.FC<SettlementBoardProps> = ({ members, expen
     } catch (err) {
       updateToast(toastId, { type: 'error', title: 'Settlement Failed', message: 'Could not verify the settlement plan.' });
     } finally {
+      inflightRef.current = false;
       setIsSettling(false);
     }
   };

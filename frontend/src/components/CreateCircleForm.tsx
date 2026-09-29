@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { useMidnightWallet } from '../context/MidnightWalletContext';
@@ -18,9 +18,11 @@ export const CreateCircleForm: React.FC<CreateCircleFormProps> = ({ onBack, onCr
   const [inviteSecret, setInviteSecret] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
   const { addToast, updateToast } = useToast();
+  const inflightRef = useRef(false);
 
   const handleCreateCircle = async () => {
-    if (!circleName.trim() || !address) return;
+    if (!circleName.trim() || !address || inflightRef.current) return;
+    inflightRef.current = true;
 
     setIsExecuting(true);
     const secret = inviteSecret.trim() || crypto.randomUUID().slice(0, 16);
@@ -45,6 +47,7 @@ export const CreateCircleForm: React.FC<CreateCircleFormProps> = ({ onBack, onCr
       const message = err instanceof Error ? err.message : 'Failed to deploy contract';
       updateToast(toastId, { type: 'error', title: 'Deployment Failed', message });
     } finally {
+      inflightRef.current = false;
       setIsExecuting(false);
     }
   };

@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export const CustomCursor = () => {
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -15,11 +16,14 @@ export const CustomCursor = () => {
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);
       cursorY.set(e.clientY - 16);
+      setIsVisible(true);
       
       // Inject global CSS variables for Dynamic Lighting
       document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
       document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
     };
+
+    const hideCursor = () => setIsVisible(false);
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -39,10 +43,12 @@ export const CustomCursor = () => {
 
     window.addEventListener('mousemove', moveCursor);
     window.addEventListener('mouseover', handleMouseOver);
+    document.documentElement.addEventListener('mouseleave', hideCursor);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
+      document.documentElement.removeEventListener('mouseleave', hideCursor);
     };
   }, [cursorX, cursorY]);
 
@@ -55,8 +61,8 @@ export const CustomCursor = () => {
           y: cursorYSpring,
         }}
         animate={{
-          scale: isHovering ? 2 : 1,
-          opacity: isHovering ? 0.5 : 1,
+          scale: isHovering ? 1.6 : 1,
+          opacity: isVisible ? (isHovering ? 0.5 : 1) : 0,
         }}
       />
       <motion.div
@@ -67,6 +73,7 @@ export const CustomCursor = () => {
         }}
         animate={{
           scale: isHovering ? 0 : 1,
+          opacity: isVisible ? 1 : 0,
         }}
       />
     </>
