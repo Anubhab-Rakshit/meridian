@@ -121,9 +121,9 @@ export function MidnightWalletProvider({ children }: { children: ReactNode }) {
     setIsWalletModalOpen(false);
   }, []);
 
-  const refreshBalance = useCallback(async () => {
+  const fetchBalance = useCallback(async (showSpinner: boolean) => {
     if (!provider?.connectedApi) return;
-    setIsRefreshingBalance(true);
+    if (showSpinner) setIsRefreshingBalance(true);
     try {
       const unshielded = await provider.connectedApi.getUnshieldedBalances();
       const totalDust = Object.values(unshielded).reduce((sum, v) => sum + Number(v), 0);
@@ -131,9 +131,31 @@ export function MidnightWalletProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       console.warn('[Midnight] Could not refresh balance:', err);
     } finally {
-      setIsRefreshingBalance(false);
+      if (showSpinner) setIsRefreshingBalance(false);
     }
   }, [provider]);
+
+  /** Manual refresh — shows the spinner on the refresh button. */
+  const refreshBalance = useCallback(() => fetchBalance(true), [fetchBalance]);
+
+  // Keep the balance fresh while connected: poll every 30s and re-fetch
+  // whenever the tab regains focus/visibility (silent — no spinner).
+  useEffect(() => {
+    if (!isConnected) return;
+    const poll = setInterval(() => {
+      void fetchBalance(false);
+    }, 30_000);
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void fetchBalance(false);
+    };
+    window.addEventListener('focus', onVisible);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      clearInterval(poll);
+      window.removeEventListener('focus', onVisible);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [isConnected, fetchBalance]);
 
   const connect = useCallback(async (walletId?: string) => {
     setError(null);
