@@ -182,7 +182,7 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', paddingBottom: '6rem' }}
+      style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1rem, 4vw, 2rem)', paddingBottom: '6rem' }}
     >
       <motion.button
         whileHover={{ x: -5, color: 'var(--accent-gold)' }}
@@ -211,12 +211,14 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
+        flexWrap: 'wrap',
+        rowGap: '1.5rem',
         paddingBottom: '2rem',
         borderBottom: '1px solid rgba(255,255,255,0.1)',
         marginBottom: '2rem',
       }}>
         <div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '3.5rem', color: '#fff', margin: '0 0 0.5rem 0', lineHeight: 1.1 }}>
+          <h2 className="circle-detail-title" style={{ fontFamily: 'var(--font-serif)', color: '#fff', margin: '0 0 0.5rem 0', lineHeight: 1.1 }}>
             {circle.circleName}
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -278,7 +280,7 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1rem' }}>
+      <div className="circle-tabs">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -314,7 +316,7 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
           transition={{ duration: 0.3 }}
         >
           {activeTab === 'expenses' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '3rem' }}>
+            <div className="circle-detail-grid">
               <div>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: '#fff', marginBottom: '2rem' }}>Ledger</h3>
                 {expenses.length === 0 ? (

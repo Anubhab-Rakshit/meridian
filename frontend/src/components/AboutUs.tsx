@@ -174,7 +174,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
             Private circles. Real money. Zero exposure.
           </motion.p>
           <motion.p variants={itemVariants} className="hero-subtitle">
-            The first dApp on Midnight Network that lets groups share expenses, split bills, and settle debts — with every amount, balance, and identity hidden from the public ledger. Built for people who want the simplicity of Venmo with the privacy of cash.
+            The first dApp on Midnight Network for shared expenses — every amount, balance, and identity stays hidden from the public ledger. Venmo-simple, cash-private.
           </motion.p>
           <motion.div variants={itemVariants} className="hero-actions">
             <button onClick={onLaunch} className="launch-btn-primary">
@@ -215,9 +215,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
             </div>
             <h3 className="feature-title">Surveillance Apps</h3>
             <p className="feature-desc">
-              Every expense-splitting app — Venmo, Splitwise, SplitIt — has the same fundamental flaw: <strong style={{ color: '#fff' }}>everything is public</strong>.
-              <br/><br/>
-              When you pay for dinner, everyone in the group sees who paid, how much, and for what. Your spending habits are an open book. Your financial relationships are exposed. Your social graph is monetized.
+              Every expense-splitting app — Venmo, Splitwise, SplitIt — has the same flaw: <strong style={{ color: '#fff' }}>everything is public</strong>. Pay for dinner and the whole group sees who paid, how much, and for what. Your spending habits and social graph are an open book.
             </p>
             <div className="feature-card-border"></div>
           </motion.div>
@@ -235,9 +233,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
             </div>
             <h3 className="feature-title">Public Blockchains</h3>
             <p className="feature-desc">
-              On transparent blockchains, it's worse. Every transaction is permanently recorded, visible to anyone, forever.
-              <br/><br/>
-              Your financial history becomes an indelible dossier that can never be erased, leaking your liquidity, income bracket, and peer interactions to the entire world.
+              On transparent blockchains it's worse: every transaction is permanently recorded and visible forever — an indelible dossier leaking your liquidity, income bracket, and peer interactions to the entire world.
             </p>
             <div className="feature-card-border"></div>
           </motion.div>
@@ -271,25 +267,25 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
               step: '01',
               title: 'Create a Circle',
               icon: <SvgShieldedVault size={28} />,
-              desc: 'Deploy a privacy vault on Midnight. Each circle gets a unique smart contract address and an invite secret. The creator sets the rules; members join by proving knowledge of the secret.',
+              desc: 'Deploy a privacy vault on Midnight — each circle gets its own contract address and invite secret. Members join by proving knowledge of the secret.',
             },
             {
               step: '02',
               title: 'Log Expenses',
               icon: <SvgCommitmentPrism size={28} />,
-              desc: 'When someone pays, they log the expense by generating a commitment hash — a cryptographic proof that the expense exists, without revealing the amount, label, or who paid. The commitment is stored on-chain; the details stay private.',
+              desc: 'Each payment is logged as a commitment hash: proof the expense exists without revealing the amount, label, or who paid. The hash goes on-chain; the details stay local.',
             },
             {
               step: '03',
               title: 'Compute Balances',
               icon: <SvgNettingMatrix size={28} />,
-              desc: 'The netting engine computes who owes whom using only local data. No balances are ever published to the blockchain. The math happens on your device.',
+              desc: 'The netting engine computes who owes whom from local data only — no balances are ever published to the blockchain.',
             },
             {
               step: '04',
               title: 'Settle on-chain',
               icon: <SvgSettlementSeal size={28} />,
-              desc: 'When it’s time to settle, the on-chain settlement circuit proves that balances are correct from committed expenses, the plan is optimal, and every member nets to zero. The settlement hash is recorded on-chain.',
+              desc: 'The settlement circuit proves balances are correct, the plan is optimal, and every member nets to zero — the verified hash is recorded on-chain.',
             },
           ].map((item, idx) => (
             <motion.div 
@@ -459,10 +455,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
             Why We Built This
           </h2>
           <p className="hero-subtitle">
-            We believe financial privacy is a human right, not a luxury. Today's financial tools force a binary choice: use convenient apps that harvest your data, or use private tools that are unusable for groups.
-          </p>
-          <p className="hero-subtitle">
-            Meridian eliminates that tradeoff. You get the convenience of expense-splitting with the privacy of cash. No one — not the platform, not the blockchain, not other members — learns your financial details unless you choose to share them.
+            Financial privacy is a human right, not a luxury. Today's tools force a choice: convenient apps that harvest your data, or private tools that don't work for groups. Meridian removes the tradeoff — expense-splitting convenience with the privacy of cash, and no one (platform, blockchain, or member) learns your details unless you choose to share them.
           </p>
         </div>
       </motion.section>
@@ -515,7 +508,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onLaunch }) => {
         </div>
 
         {/* Tab Content Panes */}
-        <div className="glass-panel" style={{ padding: '3rem', minHeight: '300px' }}>
+        <div className="glass-panel spec-pane">
           <AnimatePresence mode="wait">
             {activeTab === 'contract' && (
               <motion.div

@@ -128,7 +128,7 @@ export const CircleList: React.FC<CircleListProps> = ({ onSelectCircle, onCreate
           variants={container}
           initial="hidden"
           animate="show"
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(350px, 100%), 1fr))', gap: '2rem' }}
         >
           {circles.map(circle => (
             <motion.div
