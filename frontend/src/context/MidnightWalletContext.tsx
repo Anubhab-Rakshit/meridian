@@ -8,9 +8,12 @@
  * Supports multiple wallets (1 AM, Lace, etc.) with a premium picker UI.
  */
 
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
 import '@midnight-ntwrk/dapp-connector-api';
 import type { InitialAPI, ConnectedAPI } from '@midnight-ntwrk/dapp-connector-api';
+
+/** localStorage key remembering which wallet was last connected. */
+const WALLET_STORAGE_KEY = 'meridian.wallet';
 
 export interface WalletInfo {
   id: string;
@@ -84,6 +87,10 @@ export function MidnightWalletProvider({ children }: { children: ReactNode }) {
   const [availableWallets, setAvailableWallets] = useState<WalletInfo[]>([]);
   const [selectedWallet, setSelectedWallet] = useState<WalletInfo | null>(null);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+
+  // True while attempting a silent session restore after page load/refresh.
+  const isRestoringRef = useRef(false);
+  const hasRestoredRef = useRef(false);
 
   const scanWallets = useCallback((): WalletInfo[] => {
     const rawWallets = findAllWallets();
@@ -212,10 +219,30 @@ export function MidnightWalletProvider({ children }: { children: ReactNode }) {
       setAddress(walletAddress);
       setIsConnected(true);
       setIsWalletModalOpen(false);
+
+      // Remember the wallet so we can silently restore the session
+      // after a page refresh or tab reload.
+      try {
+        localStorage.setItem(WALLET_STORAGE_KEY, walletInfo.id);
+      } catch {
+        // storage unavailable (private mode) — non-fatal
+      }
     } catch (err) {
-      console.error('[Midnight] Connection failed:', err);
-      setError(err instanceof Error ? err.message : 'Failed to connect wallet');
+      if (isRestoringRef.current) {
+        // Silent restore failed (wallet locked, rejected, or gone) —
+        // forget the session quietly instead of showing an error banner.
+        console.info('[Midnight] Session restore failed:', err);
+        try {
+          localStorage.removeItem(WALLET_STORAGE_KEY);
+        } catch {
+          // ignore
+        }
+      } else {
+        console.error('[Midnight] Connection failed:', err);
+        setError(err instanceof Error ? err.message : 'Failed to connect wallet');
+      }
     } finally {
+      isRestoringRef.current = false;
       setIsConnecting(false);
       setConnectingWalletId(null);
     }
@@ -228,7 +255,41 @@ export function MidnightWalletProvider({ children }: { children: ReactNode }) {
     setSelectedWallet(null);
     setIsConnected(false);
     setError(null);
+    try {
+      localStorage.removeItem(WALLET_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
   }, []);
+
+  // Silently restore the previous session after a page refresh.
+  // Runs once, after extensions have had a moment to inject their APIs.
+  useEffect(() => {
+    if (hasRestoredRef.current || isConnected || isConnecting) return;
+
+    let storedId: string | null = null;
+    try {
+      storedId = localStorage.getItem(WALLET_STORAGE_KEY);
+    } catch {
+      return;
+    }
+    if (!storedId) return;
+
+    const timer = setTimeout(() => {
+      if (hasRestoredRef.current || isConnected || isConnecting) return;
+      const raw = findAllWallets();
+      const exists = raw.some(
+        (w) => (w.rdns || w.name.toLowerCase().replace(/\s+/g, '')) === storedId
+      );
+      hasRestoredRef.current = true;
+      if (!exists) return;
+      console.log('[Midnight] Restoring previous session:', storedId);
+      isRestoringRef.current = true;
+      void connect(storedId!);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [connect, isConnected, isConnecting]);
 
   const value: MidnightWalletState = {
     isConnected,
