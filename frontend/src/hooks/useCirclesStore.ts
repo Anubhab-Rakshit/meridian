@@ -38,6 +38,12 @@ interface CircleRow {
 
 // ─── Expense Record ─────────────────────────────────────────────────────────
 
+/**
+ * Per-member amounts for a custom split: wallet address → amount owed.
+ * Sums to the expense amount.
+ */
+export type SplitShares = Record<string, number>;
+
 export interface ExpenseRecord {
   id: string;
   walletAddress: string;
@@ -45,6 +51,7 @@ export interface ExpenseRecord {
   expenseLabel: string;
   amount: number;
   expenseType: 'equal' | 'custom';
+  shares: SplitShares | null;
   commitmentHash: string;
   txHash: string | null;
   blockHeight: number | null;
@@ -64,6 +71,26 @@ interface ExpenseRow {
   block_height: number | null;
   settled_at: string | null;
   created_at: string;
+}
+
+/**
+ * The `expense_type` column stores either a plain type ('equal' | 'custom')
+ * or a custom split with its shares encoded as `custom:<json>`.
+ * This avoids a schema migration while keeping the column human-readable.
+ */
+export function parseExpenseType(raw: string): { type: 'equal' | 'custom'; shares: SplitShares | null } {
+  if (raw.startsWith('custom:')) {
+    try {
+      const parsed = JSON.parse(raw.slice('custom:'.length));
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        return { type: 'custom', shares: parsed as SplitShares };
+      }
+    } catch {
+      // malformed payload — fall through
+    }
+    return { type: 'custom', shares: null };
+  }
+  return { type: raw === 'custom' ? 'custom' : 'equal', shares: null };
 }
 
 // ─── Settlement Record ──────────────────────────────────────────────────────
@@ -152,13 +179,15 @@ function mapCircleRow(row: CircleRow): CircleRecord {
 }
 
 function mapExpenseRow(row: ExpenseRow): ExpenseRecord {
+  const { type, shares } = parseExpenseType(row.expense_type);
   return {
     id: row.id,
     walletAddress: row.wallet_address,
     circleAddress: row.circle_address,
     expenseLabel: row.expense_label,
     amount: row.amount,
-    expenseType: row.expense_type as 'equal' | 'custom',
+    expenseType: type,
+    shares,
     commitmentHash: row.commitment_hash,
     txHash: row.tx_hash,
     blockHeight: row.block_height,
@@ -232,16 +261,21 @@ export async function saveExpense(input: {
   expenseLabel: string;
   amount: number;
   expenseType: 'equal' | 'custom';
+  shares?: SplitShares;
   commitmentHash: string;
   txHash?: string;
   blockHeight?: number;
 }): Promise<void> {
+  const expenseType =
+    input.expenseType === 'custom' && input.shares
+      ? `custom:${JSON.stringify(input.shares)}`
+      : input.expenseType;
   const { error } = await supabase.from('expenses').insert({
     wallet_address: input.walletAddress,
     circle_address: input.circleAddress,
     expense_label: input.expenseLabel,
     amount: input.amount,
-    expense_type: input.expenseType,
+    expense_type: expenseType,
     commitment_hash: input.commitmentHash,
     tx_hash: input.txHash ?? null,
     block_height: input.blockHeight ?? null,

@@ -57,6 +57,19 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
           isCreator: false,
         });
       }
+      // Custom splits may name members who never paid — include them
+      if (exp.shares) {
+        for (const addr of Object.keys(exp.shares)) {
+          if (!memberMap.has(addr)) {
+            memberMap.set(addr, {
+              id: addr,
+              name: addr === address ? 'You' : `Member ${addr.slice(0, 8)}...`,
+              address: addr,
+              isCreator: false,
+            });
+          }
+        }
+      }
     }
 
     return Array.from(memberMap.values());
@@ -72,19 +85,17 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
       balanceMap.set(m.id, 0);
     }
 
-    // Each expense: payer is owed (amount / members.length) by each non-payer
-    const sharePerMember = members.length;
+    // Each expense: every member is debited their share; the payer is
+    // credited the full amount they fronted. Custom splits use the stored
+    // per-member shares; equal splits divide evenly.
     for (const exp of open) {
-      const share = exp.amount / sharePerMember;
-      const currentBalance = balanceMap.get(exp.walletAddress) || 0;
-      balanceMap.set(exp.walletAddress, currentBalance + exp.amount - share);
+      const shareFor = (memberId: string): number =>
+        exp.shares ? (exp.shares[memberId] ?? 0) : exp.amount / members.length;
 
       for (const m of members) {
-        if (m.id !== exp.walletAddress) {
-          const mb = balanceMap.get(m.id) || 0;
-          balanceMap.set(m.id, mb - share);
-        }
+        balanceMap.set(m.id, (balanceMap.get(m.id) ?? 0) - shareFor(m.id));
       }
+      balanceMap.set(exp.walletAddress, (balanceMap.get(exp.walletAddress) ?? 0) + exp.amount);
     }
 
     return balanceMap;
@@ -118,7 +129,12 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
 
   if (!circle) return null;
 
-  const handleAddExpense = async (label: string, amount: number, splitType: 'equal' | 'custom') => {
+  const handleAddExpense = async (
+    label: string,
+    amount: number,
+    splitType: 'equal' | 'custom',
+    shares?: Record<string, number>
+  ) => {
     if (!address) throw new Error('Wallet not connected');
 
     const commitmentHash = Array.from(
@@ -133,6 +149,7 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
       expenseLabel: label,
       amount,
       expenseType: splitType,
+      shares,
       commitmentHash,
     });
 
@@ -307,7 +324,7 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
                 )}
               </div>
               <div>
-                <ExpenseForm onAddExpense={handleAddExpense} />
+                <ExpenseForm members={members} onAddExpense={handleAddExpense} />
               </div>
             </div>
           )}
@@ -328,7 +345,8 @@ export const CircleDetail: React.FC<CircleDetailProps> = ({ contractAddress, onB
                   expenses={unsettledExpenses.map((e) => ({
                     paidBy: e.walletAddress,
                     amount: e.amount,
-                    splitWith: members.map((m) => m.id),
+                    splitWith: e.shares ? Object.keys(e.shares) : members.map((m) => m.id),
+                    shares: e.shares,
                   }))}
                   settlementPlan={settlementPlan}
                   onSettle={async () => {

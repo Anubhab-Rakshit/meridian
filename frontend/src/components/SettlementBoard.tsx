@@ -5,7 +5,12 @@ import type { SettlementPlan } from '@meridian/netting';
 
 interface SettlementBoardProps {
   members: { id: string; name: string; address: string }[];
-  expenses: { paidBy: string; amount: number; splitWith: string[] }[];
+  expenses: {
+    paidBy: string;
+    amount: number;
+    splitWith: string[];
+    shares?: Record<string, number> | null;
+  }[];
   settlementPlan: SettlementPlan;
   onSettle: () => Promise<void>;
 }
@@ -29,18 +34,17 @@ export const SettlementBoard: React.FC<SettlementBoardProps> = ({ members, expen
     }
   };
 
-  // Compute net balances from expenses
+  // Compute net balances from expenses (honors custom splits)
   const balanceMap = new Map<string, number>();
   for (const m of members) balanceMap.set(m.id, 0);
   const shareDenom = members.length || 1;
   for (const exp of expenses) {
-    const share = exp.amount / shareDenom;
-    balanceMap.set(exp.paidBy, (balanceMap.get(exp.paidBy) ?? 0) + exp.amount - share);
+    const shareFor = (memberId: string): number =>
+      exp.shares ? (exp.shares[memberId] ?? 0) : exp.amount / shareDenom;
     for (const m of members) {
-      if (m.id !== exp.paidBy) {
-        balanceMap.set(m.id, (balanceMap.get(m.id) ?? 0) - share);
-      }
+      balanceMap.set(m.id, (balanceMap.get(m.id) ?? 0) - shareFor(m.id));
     }
+    balanceMap.set(exp.paidBy, (balanceMap.get(exp.paidBy) ?? 0) + exp.amount);
   }
 
   return (
