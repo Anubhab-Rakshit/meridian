@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, XCircle, Loader2, ExternalLink } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, ExternalLink, X } from 'lucide-react';
 
 export type ToastType = 'pending' | 'success' | 'error';
 
@@ -27,55 +27,49 @@ export const useToast = () => {
   return context;
 };
 
+/** Safety net: a pending toast that never resolves dismisses itself. */
+const PENDING_TIMEOUT_MS = 60_000;
+/** Success/error toasts auto-dismiss. */
+const DONE_TIMEOUT_MS = 5_000;
+
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
-
-  const addToast = useCallback((toast: Omit<ToastMessage, 'id'>) => {
-    const id = crypto.randomUUID();
-    setToasts((prev) => [...prev, { ...toast, id }]);
-    
-    // Auto-remove success/error after 5s
-    if (toast.type !== 'pending') {
-      setTimeout(() => removeToast(id), 5000);
-    }
-    
-    return id;
-  }, []);
-
-  const updateToast = useCallback((id: string, updates: Partial<Omit<ToastMessage, 'id'>>) => {
-    setToasts((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
-    );
-    
-    // Auto-remove if updated to success/error
-    if (updates.type && updates.type !== 'pending') {
-      setTimeout(() => removeToast(id), 5000);
-    }
-  }, []);
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
+  const addToast = useCallback((toast: Omit<ToastMessage, 'id'>) => {
+    const id = crypto.randomUUID();
+    setToasts((prev) => [...prev, { ...toast, id }]);
+
+    // Auto-remove: success/error after 5s, pending after 60s as a safety net
+    const timeout = toast.type === 'pending' ? PENDING_TIMEOUT_MS : DONE_TIMEOUT_MS;
+    setTimeout(() => removeToast(id), timeout);
+
+    return id;
+  }, [removeToast]);
+
+  const updateToast = useCallback((id: string, updates: Partial<Omit<ToastMessage, 'id'>>) => {
+    setToasts((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
+    );
+
+    // Auto-remove if updated to success/error
+    if (updates.type && updates.type !== 'pending') {
+      setTimeout(() => removeToast(id), DONE_TIMEOUT_MS);
+    }
+  }, [removeToast]);
+
   return (
     <ToastContext.Provider value={{ addToast, updateToast, removeToast }}>
       {children}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '2rem',
-          right: '2rem',
-          zIndex: 9999,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1rem',
-          pointerEvents: 'none',
-        }}
-      >
+      <div className="tx-toast-container">
         <AnimatePresence mode="popLayout">
           {toasts.map((t) => (
             <motion.div
               key={t.id}
+              className="tx-toast"
               layout
               initial={{ opacity: 0, x: 50, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -105,6 +99,28 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%)',
                 pointerEvents: 'none',
               }} />
+
+              {/* Manual dismiss — always available, even for stuck pending toasts */}
+              <button
+                type="button"
+                aria-label="Dismiss notification"
+                onClick={() => removeToast(t.id)}
+                style={{
+                  position: 'absolute',
+                  top: '0.5rem',
+                  right: '0.5rem',
+                  padding: '0.25rem',
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'rgba(255,255,255,0.4)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  borderRadius: '6px',
+                  zIndex: 1,
+                }}
+              >
+                <X size={14} />
+              </button>
 
               <div style={{ marginTop: '0.125rem' }}>
                 {t.type === 'pending' && <Loader2 size={18} className="animate-spin" style={{ color: 'var(--accent-gold)' }} />}

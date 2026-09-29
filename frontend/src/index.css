@@ -1539,3 +1539,40 @@ a, button, input {
 .wallet-connected-chevron {
   color: var(--text-muted);
 }
+
+/* ============================
+   TRANSACTION TOASTS
+   ============================ */
+
+.tx-toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  pointer-events: none;
+}
+
+.tx-toast button[aria-label="Dismiss notification"]:hover {
+  color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Mobile: pin to the top (full width, safe-area aware) so toasts never
+   sit on top of form inputs or get trapped under the on-screen keyboard. */
+@media (max-width: 640px) {
+  .tx-toast-container {
+    top: calc(0.75rem + env(safe-area-inset-top, 0px));
+    bottom: auto;
+    left: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .tx-toast {
+    min-width: 0 !important;
+    width: 100%;
+    padding: 1rem !important;
+  }
+}
